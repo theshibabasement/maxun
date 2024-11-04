@@ -1,7 +1,7 @@
 <h1 align="center">
     <div>
         <a href="https://maxun-website.vercel.app/">
-            <img src="/public/img/maxunlogo.png" width="50" />
+            <img src="/src/assets/maxunlogo.png" width="50" />
             <br>
             Maxun
         </a>
