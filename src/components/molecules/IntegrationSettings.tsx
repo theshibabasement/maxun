@@ -113,7 +113,7 @@ export const IntegrationSettingsModal = ({ isOpen, handleStart, handleClose }: I
     }, [recordingId]);
 
     return (
-        <GenericModal isOpen={isOpen} onClose={handleClose}>
+        <GenericModal isOpen={isOpen} onClose={handleClose} modalStyle={modalStyle}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginLeft: '65px' }}>
                 <Typography variant="h6" sx={{ margin: '15px 0px' }}>Integrate with Google Sheet <Chip label="beta" color="primary" variant="outlined" /></Typography>
 
@@ -225,3 +225,15 @@ export const IntegrationSettingsModal = ({ isOpen, handleStart, handleClose }: I
         </GenericModal>
     );
 };
+
+export const modalStyle = {
+    top: '40%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    backgroundColor: 'background.paper',
+    p: 4,
+    height:'fit-content',
+    display:'block',
+    padding: '20px',
+  };
