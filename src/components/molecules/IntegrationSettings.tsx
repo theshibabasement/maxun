@@ -143,7 +143,6 @@ export const IntegrationSettingsModal = ({ isOpen, handleStart, handleClose }: I
                                     variant="contained"
                                     color="primary"
                                     onClick={authenticateWithGoogle}
-                                    style={{ marginBottom: '15px' }}
                                 >
                                     Authenticate with Google
                                 </Button>
