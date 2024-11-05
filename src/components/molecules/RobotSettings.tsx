@@ -123,7 +123,7 @@ export const RobotSettingsModal = ({ isOpen, handleStart, handleClose, initialSe
                                 <TextField
                                     label="Created By User"
                                     key="Created By User"
-                                    value={userEmail}
+                                    value={userEmail ? userEmail : ''}
                                     InputProps={{
                                         readOnly: true,
                                     }}
