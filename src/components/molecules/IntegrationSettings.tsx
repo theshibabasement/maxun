@@ -115,7 +115,7 @@ export const IntegrationSettingsModal = ({ isOpen, handleStart, handleClose }: I
     return (
         <GenericModal isOpen={isOpen} onClose={handleClose} modalStyle={modalStyle}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginLeft: '65px' }}>
-                <Typography variant="h6" sx={{ margin: '15px 0px' }}>Integrate with Google Sheet <Chip label="beta" color="primary" variant="outlined" /></Typography>
+                <Typography variant="h6" >Integrate with Google Sheet <Chip label="beta" color="primary" variant="outlined" /></Typography>
 
                 {recording && recording.google_sheet_id ? (
                     <>
