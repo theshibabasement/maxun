@@ -233,7 +233,7 @@ export const modalStyle = {
     width: '50%',
     backgroundColor: 'background.paper',
     p: 4,
-    height:'fit-content',
-    display:'block',
+    height: 'fit-content',
+    display: 'block',
     padding: '20px',
-  };
+};
