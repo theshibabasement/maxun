@@ -74,7 +74,7 @@ export const NavBar: React.FC<NavBarProps> = ({ recordingName, isRecording }) =>
                   alignItems: 'center',
                   borderRadius: '5px',
                   padding: '8px',
-                  marginRight: '10px',
+                  marginRight: '30px',
                 }}
                 >
                 <DiscordIcon sx={{ marginRight: '5px' }} />
