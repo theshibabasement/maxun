@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Paper, Button } from "@mui/material";
-import { AutoAwesome, FormatListBulleted, VpnKey, Usb, Article, Link, CloudQueue, Code } from "@mui/icons-material";
+import { AutoAwesome, FormatListBulleted, VpnKey, Usb, CloudQueue, Code } from "@mui/icons-material";
 import { apiUrl } from "../../apiConfig";
 
 interface MainMenuProps {
