@@ -88,7 +88,7 @@ export const MainMenu = ({ value = 'recordings', handleChangeContent }: MainMenu
         <hr />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
           <Button href={`${apiUrl}/api-docs/`} target="_blank" rel="noopener noreferrer" sx={buttonStyles} startIcon={<Article />}>
-            API Docs
+            Website To API
           </Button>
           <Button href="https://forms.gle/hXjgqDvkEhPcaBW76" target="_blank" rel="noopener noreferrer" sx={buttonStyles} startIcon={<CloudQueue />}>
             Join Maxun Cloud
