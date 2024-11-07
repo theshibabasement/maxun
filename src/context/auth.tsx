@@ -1,7 +1,7 @@
 import { useReducer, createContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { apiUrl } from "../apiConfig";
 
 interface AuthProviderProps {
@@ -60,7 +60,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Function to check token expiration
     const checkTokenExpiration = (token: string) => {
-        const decodedToken: any = jwt_decode(token);
+        const decodedToken: any = jwtDecode(token);
         const currentTime = Date.now();
         const tokenExpiryTime = decodedToken.exp * 1000; // Convert to milliseconds
         const timeUntilExpiry = tokenExpiryTime - currentTime;
