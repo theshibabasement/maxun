@@ -1,6 +1,7 @@
 import { useReducer, createContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 import { apiUrl } from "../apiConfig";
 
 interface AuthProviderProps {
@@ -50,10 +51,33 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
 
+    // Function to handle logout
+    const logoutUser = () => {
+        dispatch({ type: 'LOGOUT' });
+        window.localStorage.removeItem('user');
+        navigate('/login');
+    };
+
+    // Function to check token expiration
+    const checkTokenExpiration = (token: string) => {
+        const decodedToken: any = jwt_decode(token);
+        const currentTime = Date.now();
+        const tokenExpiryTime = decodedToken.exp * 1000; // Convert to milliseconds
+        const timeUntilExpiry = tokenExpiryTime - currentTime;
+
+        if (timeUntilExpiry > 0) {
+            setTimeout(logoutUser, timeUntilExpiry); // Auto-logout when token expires
+        } else {
+            logoutUser(); // Immediately logout if token is expired
+        }
+    };
+
     useEffect(() => {
         const storedUser = window.localStorage.getItem('user');
         if (storedUser) {
-            dispatch({ type: 'LOGIN', payload: JSON.parse(storedUser) });
+            const userData = JSON.parse(storedUser);
+            dispatch({ type: 'LOGIN', payload: userData });
+            checkTokenExpiration(userData.token); // Check if token is still valid
         }
     }, []);
 
@@ -69,9 +93,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                         .get(`${apiUrl}/auth/logout`)
                         .then(() => {
                             console.log('/401 error > logout');
-                            dispatch({ type: 'LOGOUT' });
-                            window.localStorage.removeItem('user');
-                            navigate('/login');
+                            logoutUser();
                         })
                         .catch((err) => {
                             console.error('AXIOS INTERCEPTORS ERROR:', err);
