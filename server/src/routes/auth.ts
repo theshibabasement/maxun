@@ -85,6 +85,14 @@ router.post('/login', async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true
         })
+        capture(
+            'maxun-oss-user-login',
+            {
+                email: user.email,
+                userId: user.id,
+                loggedInAt: new Date().toISOString()
+            }
+        )
         res.json(user)
     } catch (error: any) {
         res.status(400).send(`Could not login user - ${error.message}`)
