@@ -66,7 +66,7 @@ export const NavBar: React.FC<NavBarProps> = ({ recordingName, isRecording }) =>
               <>
                 <IconButton
                   component="a"
-                  href="https://discord.gg/NFhWDCdb"
+                  href="https://discord.gg/5GbPjBUkws"
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{
