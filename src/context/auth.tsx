@@ -60,17 +60,27 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Function to check token expiration
     const checkTokenExpiration = (token: string) => {
-        const decodedToken: any = jwtDecode(token);
-        const currentTime = Date.now();
-        const tokenExpiryTime = decodedToken.exp * 1000; // Convert to milliseconds
-        const timeUntilExpiry = tokenExpiryTime - currentTime;
+        if (!token || typeof token !== 'string') {
+            console.warn("Invalid token provided for decoding");
+            logoutUser();
+            return;
+        }
+        try {
+            const decodedToken: any = jwtDecode(token);
+            const currentTime = Date.now();
+            const tokenExpiryTime = decodedToken.exp * 1000; // Convert to milliseconds
 
-        if (timeUntilExpiry > 0) {
-            setTimeout(logoutUser, timeUntilExpiry); // Auto-logout when token expires
-        } else {
-            logoutUser(); // Immediately logout if token is expired
+            if (tokenExpiryTime > currentTime) {
+                setTimeout(logoutUser, tokenExpiryTime - currentTime); // Auto-logout when token expires
+            } else {
+                logoutUser(); // Immediately logout if token is expired
+            }
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            logoutUser(); // Logout on error
         }
     };
+
 
     useEffect(() => {
         const storedUser = window.localStorage.getItem('user');
@@ -104,7 +114,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             return Promise.reject(error);
         }
     );
-    
+
     return (
         <AuthContext.Provider value={{ state, dispatch }}>
             {children}
