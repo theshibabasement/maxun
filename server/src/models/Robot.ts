@@ -1,6 +1,6 @@
-import { Model, DataTypes, Optional } from "sequelize";
-import sequelize from "../storage/db";
-import { WorkflowFile, Where, What, WhereWhatPair } from "maxun-core";
+import { Model, DataTypes, Optional } from 'sequelize';
+import sequelize from '../storage/db';
+import { WorkflowFile, Where, What, WhereWhatPair } from 'maxun-core';
 
 interface RobotMeta {
   name: string;
@@ -15,42 +15,23 @@ interface RobotWorkflow {
   workflow: WhereWhatPair[];
 }
 
-interface IntegrationData {
-  google_sheets?: {
-    email: string;
-    sheet_id: string;
-    sheet_name: string;
-    access_token: string;
-    refresh_token: string;
-  };
-  airtable?: {
-    base_id: string;
-    table_name: string;
-    access_token: string;
-    refresh_token: string;
-  };
-}
-
 interface RobotAttributes {
   id: string;
   userId?: number;
   recording_meta: RobotMeta;
   recording: RobotWorkflow;
+  google_sheet_email?: string | null;
+  google_sheet_name?: string | null;
+  google_sheet_id?: string | null;
+  google_access_token?: string | null;
+  google_refresh_token?: string | null;
   schedule?: ScheduleConfig | null;
-  integrations?: IntegrationData | null;
 }
 
 interface ScheduleConfig {
   runEvery: number;
-  runEveryUnit: "MINUTES" | "HOURS" | "DAYS" | "WEEKS" | "MONTHS";
-  startFrom:
-    | "SUNDAY"
-    | "MONDAY"
-    | "TUESDAY"
-    | "WEDNESDAY"
-    | "THURSDAY"
-    | "FRIDAY"
-    | "SATURDAY";
+  runEveryUnit: 'MINUTES' | 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS';
+  startFrom: 'SUNDAY' | 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY';
   atTimeStart?: string;
   atTimeEnd?: string;
   timezone: string;
@@ -60,18 +41,19 @@ interface ScheduleConfig {
   cronExpression?: string;
 }
 
-interface RobotCreationAttributes extends Optional<RobotAttributes, "id"> {}
+interface RobotCreationAttributes extends Optional<RobotAttributes, 'id'> { }
 
-class Robot
-  extends Model<RobotAttributes, RobotCreationAttributes>
-  implements RobotAttributes
-{
+class Robot extends Model<RobotAttributes, RobotCreationAttributes> implements RobotAttributes {
   public id!: string;
   public userId!: number;
   public recording_meta!: RobotMeta;
   public recording!: RobotWorkflow;
+  public google_sheet_email!: string | null;
+  public google_sheet_name?: string | null;
+  public google_sheet_id?: string | null;
+  public google_access_token!: string | null;
+  public google_refresh_token!: string | null;
   public schedule!: ScheduleConfig | null;
-  public integrations!: IntegrationData | null;
 }
 
 Robot.init(
@@ -93,10 +75,25 @@ Robot.init(
       type: DataTypes.JSONB,
       allowNull: false,
     },
-    integrations: {
-      type: DataTypes.JSONB,
+    google_sheet_email: {
+      type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: {},
+    },
+    google_sheet_name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    google_sheet_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    google_access_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    google_refresh_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     schedule: {
       type: DataTypes.JSONB,
@@ -105,7 +102,7 @@ Robot.init(
   },
   {
     sequelize,
-    tableName: "robot",
+    tableName: 'robot',
     timestamps: false,
   }
 );
