@@ -341,12 +341,14 @@ router.get('/google/callback', requireSignIn, async (req: AuthenticatedRequest, 
         const jwtToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '12h' });
         res.cookie('token', jwtToken, { httpOnly: true });
 
-        res.json({
-            message: 'Google authentication successful',
-            google_sheet_email: robot.google_sheet_email,
-            jwtToken,
-            files
-        });
+        // res.json({
+        //     message: 'Google authentication successful',
+        //     google_sheet_email: robot.google_sheet_email,
+        //     jwtToken,
+        //     files
+        // });
+
+        res.redirect(`http://localhost:5173`);
     } catch (error: any) {
         res.status(500).json({ message: `Google OAuth error: ${error.message}` });
     }
