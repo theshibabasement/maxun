@@ -47,6 +47,30 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
     }
   }, [row.serializableOutput]);
 
+  // Function to convert table data to CSV format
+  const convertToCSV = (data: any[], columns: string[]): string => {
+    const header = columns.join(','); // Create CSV header row
+    const rows = data.map(row => 
+      columns.map(col => JSON.stringify(row[col], null, 2)).join(',')
+    ); // Map each row of data to a CSV row
+    return [header, ...rows].join('\n'); // Combine header and rows with newline characters
+  }
+
+  // Function to download CSV file when called
+  const downloadCSV = () => {
+    const csvContent = convertToCSV(tableData, columns); // Convert data to CSV format
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); // Create a Blob object with CSV content
+    const url = URL.createObjectURL(blob); // Create a temporary URL for the Blob
+
+    // Create a temporary link to download the CSV file
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "data.csv"); // Set the download filename
+    document.body.appendChild(link);
+    link.click(); // Programmatically click the link to trigger the download
+    document.body.removeChild(link); // Remove the link element after download
+  }
+
   return (
     <Box sx={{ width: '100%' }}>
       <TabContext value={tab}>
@@ -105,26 +129,31 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
                 )
               })}
               {tableData.length > 0 ? (
-                <TableContainer component={Paper} sx={{ maxHeight: 440, marginTop: 2 }}>
-                  <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                      <TableRow>
-                        {columns.map((column) => (
-                          <TableCell key={column}>{column}</TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {tableData.map((row, index) => (
-                        <TableRow key={index}>
+                <>
+                  <Button variant="contained" color="primary" onClick={downloadCSV}>
+                    Download as CSV
+                  </Button>
+                  <TableContainer component={Paper} sx={{ maxHeight: 440, marginTop: 2 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                      <TableHead>
+                        <TableRow>
                           {columns.map((column) => (
-                            <TableCell key={column}>{row[column]}</TableCell>
+                            <TableCell key={column}>{column}</TableCell>
                           ))}
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                      </TableHead>
+                      <TableBody>
+                        {tableData.map((row, index) => (
+                          <TableRow key={index}>
+                            {columns.map((column) => (
+                              <TableCell key={column}>{row[column]}</TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </>
               ) : (
                 <Box sx={{
                   width: 'fit-content',
