@@ -1,7 +1,7 @@
 import { useReducer, createContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import { apiUrl } from "../apiConfig";
 
 interface AuthProviderProps {
@@ -54,6 +54,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const logoutUser = () => {
         dispatch({ type: 'LOGOUT' });
         window.localStorage.removeItem('user');
+        window.localStorage.removeItem('logoutTimeout');
         navigate('/login');
     };
 
@@ -66,8 +67,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             const tokenExpiryTime = decodedToken.exp * 1000;
 
             if (tokenExpiryTime > currentTime) {
-                // Set a timeout for auto-logout when the token expires
-                setTimeout(logoutUser, tokenExpiryTime - currentTime);
+                // Calculate remaining time until token expires
+                const remainingTime = tokenExpiryTime - currentTime;
+
+                // Check if a logout timeout already exists in local storage
+                const existingTimeout = window.localStorage.getItem('logoutTimeout');
+
+                if (!existingTimeout) {
+                    // Set a timeout for auto-logout
+                    const timeoutId = setTimeout(logoutUser, remainingTime);
+                    window.localStorage.setItem('logoutTimeout', JSON.stringify(timeoutId));
+                }
             } else {
                 logoutUser(); // Immediately logout if token is expired
             }
@@ -88,6 +98,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                 checkTokenExpiration(userData.token);
             }
         }
+        // Clean up timeout on component unmount
+        return () => {
+            const timeoutId = window.localStorage.getItem('logoutTimeout');
+            if (timeoutId) {
+                clearTimeout(JSON.parse(timeoutId));
+                window.localStorage.removeItem('logoutTimeout');
+            }
+        };
     }, []); // Only run this effect once on mount
 
     axios.interceptors.response.use(
