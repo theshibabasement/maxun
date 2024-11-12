@@ -120,7 +120,7 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
                     Download as JSON
                   </a>
                 </Typography>
-                <Button
+                <Typography
                   onClick={downloadCSV}
                   sx={{
                     textTransform: 'none',
@@ -129,12 +129,13 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
                     background: 'none',
                     '&:hover': {
                       background: 'none',
-                      textDecoration: 'underline',
+                      
                     },
+                    cursor: 'pointer',
                   }}
                 >
                   Download as CSV
-                </Button>
+                </Typography>
               </Box>
               {tableData.length > 0 ? (
                 <TableContainer component={Paper} sx={{ maxHeight: 440, marginTop: 2 }}>
