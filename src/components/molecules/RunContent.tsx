@@ -122,19 +122,8 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
                 </Typography>
                 <Typography
                   onClick={downloadCSV}
-                  sx={{
-                    textTransform: 'none',
-                    color: 'primary.main',
-                    padding: 0,
-                    background: 'none',
-                    '&:hover': {
-                      background: 'none',
-                      
-                    },
-                    cursor: 'pointer',
-                  }}
                 >
-                  Download as CSV
+                  <a style={{ textDecoration: 'none', cursor: 'pointer' }}>Download as CSV</a>
                 </Typography>
               </Box>
               {tableData.length > 0 ? (
