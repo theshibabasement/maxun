@@ -14,7 +14,7 @@ minioClient.bucketExists('maxun-test')
     if (exists) {
       console.log('MinIO was connected successfully.');
     } else {
-      console.log('Bucket does not exist, but MinIO was connected.');
+      console.log('MinIO was connected.');
     }
   })
   .catch((err) => {
