@@ -18,6 +18,8 @@ import { Add } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { stopRecording } from "../../api/recording";
 import { GenericModal } from '../atoms/GenericModal';
+import axios from 'axios';
+import { apiUrl } from '../../apiConfig';
 
 
 /** TODO:
@@ -159,12 +161,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
     }
   }, []);
 
-  const hasAssociatedRuns = async (robotId: string): Promise<boolean> => {
-    
-    const associatedRuns = await fetch(`/api/robot/${robotId}/runs`);
-    const data = await associatedRuns.json();
-    return data.length > 0; 
-  };
+   
 
   return (
     <React.Fragment>
@@ -258,21 +255,31 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                           case 'delete':
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                <IconButton aria-label="add" size="small" onClick={() => {
+                                <IconButton aria-label="add" size="small" onClick={async () => {
+
                                   checkRunsForRecording(row.id).then((result: boolean) => {
                                     if (result) {
-                                      notify('warning', 'Recording has associated runs, please delete them first');
+                                      notify('warning', 'Cannot delete recording as it has active runs');
                                     }
-                                    
                                   })
+                                  
+                                  
+                                    deleteRecordingFromStorage(row.id).then((result: boolean) => {
+                                      if (result) {
+                                        setRows([]);
+                                        notify('success', 'Recording deleted successfully');
+                                        fetchRecordings();
+                                      }
+                                    })
+                                  
 
-                                  deleteRecordingFromStorage(row.id).then((result: boolean) => {
-                                    if (result) {
-                                      setRows([]);
-                                      notify('success', 'Recording deleted successfully');
-                                      fetchRecordings();
-                                    }
-                                  })
+                                  
+
+                                 
+                                    
+                                  
+
+                                  
                                 }}>
                                   <DeleteForever />
                                 </IconButton>

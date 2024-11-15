@@ -16,6 +16,7 @@ import { workflowQueue } from '../worker';
 import { AuthenticatedRequest } from './record';
 import { computeNextRun } from '../utils/schedule';
 import { capture } from "../utils/analytics";
+import { tryCatch } from 'bullmq';
 
 export const router = Router();
 
@@ -56,6 +57,60 @@ router.get('/recordings/:id', requireSignIn, async (req, res) => {
     return res.send(null);
   }
 })
+
+router.get(('/recordings/:id/runs'), requireSignIn, async (req, res) => {
+  try {
+    const runs = await Run.findAll({
+        where: {
+            robotMetaId: req.params.id
+        },
+        raw: true
+    });
+    const formattedRuns = runs.map(formatRunResponse);
+    const response = {
+        statusCode: 200,
+        messageCode: "success",
+        runs: {
+        totalCount: formattedRuns.length,
+        items: formattedRuns,
+        },
+    };
+
+    res.status(200).json(response);
+} catch (error) {
+    console.error("Error fetching runs:", error);
+    res.status(500).json({
+        statusCode: 500,
+        messageCode: "error",
+        message: "Failed to retrieve runs",
+    });
+}
+})
+
+function formatRunResponse(run: any) {
+  const formattedRun = {
+      id: run.id,
+      status: run.status,
+      name: run.name,
+      robotId: run.robotMetaId, // Renaming robotMetaId to robotId
+      startedAt: run.startedAt,
+      finishedAt: run.finishedAt,
+      runId: run.runId,
+      runByUserId: run.runByUserId,
+      runByScheduleId: run.runByScheduleId,
+      runByAPI: run.runByAPI,
+      data: {},
+      screenshot: null,
+  };
+
+  if (run.serializableOutput && run.serializableOutput['item-0']) {
+      formattedRun.data = run.serializableOutput['item-0'];
+  } else if (run.binaryOutput && run.binaryOutput['item-0']) {
+      formattedRun.screenshot = run.binaryOutput['item-0']; 
+  }
+
+  return formattedRun;
+}
 
 /**
  * DELETE endpoint for deleting a recording from the storage.

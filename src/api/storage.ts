@@ -9,6 +9,7 @@ import { apiUrl } from "../apiConfig";
 
 
 
+
 export const getStoredRecordings = async (): Promise<string[] | null> => {
   try {
     const response = await axios.get(`${apiUrl}/storage/recordings`);
@@ -52,30 +53,22 @@ export const getStoredRecording = async (id: string) => {
 }
 
 
+
 export const checkRunsForRecording = async (id: string): Promise<boolean> => {
-  const apiKey = localStorage.getItem('x-api-key');
-
-  // Check if the API key exists
-  if (!apiKey) {
-    console.error('API key is missing.');
-    return false;
-  }
-
+    
+  
   try {
-    const response = await axios.get(`${apiUrl}/api/robots/${id}/runs`, {
-      headers: {
-        'x-api-key': apiKey, // Pass the valid API key in the header
-      },
-      withCredentials: true,
-    });
+    const response = await axios.get(`${apiUrl}/storage/recordings/${id}/runs`);
 
     const runs = response.data;
+    console.log(runs.runs.totalCount)
     return runs.runs.totalCount > 0;
   } catch (error) {
     console.error('Error checking runs for recording:', error);
     return false;
   }
 };
+
 
 export const deleteRecordingFromStorage = async (id: string): Promise<boolean> => {
   
@@ -85,7 +78,6 @@ export const deleteRecordingFromStorage = async (id: string): Promise<boolean> =
     
     return false;
   }
-
   try {
     const response = await axios.delete(`${apiUrl}/storage/recordings/${id}`);
     if (response.status === 200) {
@@ -99,6 +91,10 @@ export const deleteRecordingFromStorage = async (id: string): Promise<boolean> =
     
     return false;
   }
+
+  
+
+  
 };
 
 export const deleteRunFromStorage = async (id: string): Promise<boolean> => {
