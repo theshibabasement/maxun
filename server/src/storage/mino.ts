@@ -12,9 +12,9 @@ const minioClient = new Client({
 minioClient.bucketExists('maxun-test')
   .then((exists) => {
     if (exists) {
-      console.log('MinIO was connected successfully.');
+      console.log('MinIO connected successfully.');
     } else {
-      console.log('Bucket does not exist, but MinIO was connected.');
+      console.log('MinIO connected successfully.');
     }
   })
   .catch((err) => {
