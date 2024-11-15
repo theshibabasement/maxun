@@ -36,6 +36,8 @@ const ApiKeyManager = () => {
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
   const { notify } = useGlobalInfoStore();
 
+  
+
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
@@ -56,6 +58,7 @@ const ApiKeyManager = () => {
     try {
       const { data } = await axios.post(`${apiUrl}/auth/generate-api-key`);
       setApiKey(data.api_key);
+      localStorage.setItem('x-api-key', data.api_key);
       notify('success', `Generated API Key successfully`);
     } catch (error: any) {
       notify('error', `Failed to generate API Key - ${error.message}`);

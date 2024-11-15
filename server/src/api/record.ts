@@ -289,7 +289,7 @@ router.get("/robots/:id", requireAPIKey, async (req: Request, res: Response) => 
  *                   type: string
  *                   example: "Failed to retrieve runs"
  */
-router.get("/robots/:id/runs", requireAPIKey, async (req: Request, res: Response) => {
+router.get("/robots/:id/runs",requireAPIKey, async (req: Request, res: Response) => {
     try {
         const runs = await Run.findAll({
             where: {
@@ -320,6 +320,7 @@ router.get("/robots/:id/runs", requireAPIKey, async (req: Request, res: Response
     }
 }
 );
+
 
 function formatRunResponse(run: any) {
     const formattedRun = {

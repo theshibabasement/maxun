@@ -13,7 +13,7 @@ import { IconButton, Button, Box, Typography, TextField } from "@mui/material";
 import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power } from "@mui/icons-material";
 import LinkIcon from '@mui/icons-material/Link';
 import { useGlobalInfoStore } from "../../context/globalInfo";
-import { deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
+import { checkRunsForRecording, deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
 import { Add } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { stopRecording } from "../../api/recording";
@@ -159,6 +159,13 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
     }
   }, []);
 
+  const hasAssociatedRuns = async (robotId: string): Promise<boolean> => {
+    
+    const associatedRuns = await fetch(`/api/robot/${robotId}/runs`);
+    const data = await associatedRuns.json();
+    return data.length > 0; 
+  };
+
   return (
     <React.Fragment>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -252,6 +259,13 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                             return (
                               <TableCell key={column.id} align={column.align}>
                                 <IconButton aria-label="add" size="small" onClick={() => {
+                                  checkRunsForRecording(row.id).then((result: boolean) => {
+                                    if (result) {
+                                      notify('warning', 'Recording has associated runs, please delete them first');
+                                    }
+                                    
+                                  })
+
                                   deleteRecordingFromStorage(row.id).then((result: boolean) => {
                                     if (result) {
                                       setRows([]);
