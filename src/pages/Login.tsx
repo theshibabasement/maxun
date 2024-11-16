@@ -79,6 +79,21 @@ const Login = () => {
                     margin="normal"
                     variant="outlined"
                     required
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            backgroundColor: email ? '#ffe6f9' : '#ffffff',
+                        //   backgroundColor: ' #ffe6f9', // Change fill color here
+                          '& fieldset': {
+                            borderColor: '#ff33cc', // Border color (optional)
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#ff33cc', // Hover border color (optional)
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#ff33cc', // Focus border color (optional)
+                          },
+                        },
+                      }}
                 />
                 <TextField
                     fullWidth
@@ -90,6 +105,21 @@ const Login = () => {
                     margin="normal"
                     variant="outlined"
                     required
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            backgroundColor: password ? '#ffe6f9' : '#ffffff',
+                        //   backgroundColor: ' #ffe6f9', // Change fill color here
+                          '& fieldset': {
+                            borderColor: '#ff33cc', // Border color (optional)
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#ff33cc', // Hover border color (optional)
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#ff33cc', // Focus border color (optional)
+                          },
+                        },
+                      }}
                 />
 
                 <Button
