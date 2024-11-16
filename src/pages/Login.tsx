@@ -59,16 +59,17 @@ const Login = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
+                backgroundColor: '#f5f5f5',
               
              
                 height: "calc(100vh - 64px)",
 
             }}
         >
-            <Typography variant="h4" gutterBottom>
+            <Box component="form" onSubmit={submitForm} sx={{ textAlign: 'center',maxWidth: 400, width: '100%', backgroundColor: '#fff', padding: 3, borderRadius: 4,boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h4" gutterBottom color={"#ff00c3"}>
                 Welcome Back!
             </Typography>
-            <Box component="form" onSubmit={submitForm} sx={{ maxWidth: 400, width: '100%' }}>
                 <TextField
                     fullWidth
                     label="Email"
