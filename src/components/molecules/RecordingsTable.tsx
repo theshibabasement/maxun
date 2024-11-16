@@ -26,7 +26,7 @@ import { GenericModal } from '../atoms/GenericModal';
 */
 
 interface Column {
-  id: 'interpret' | 'name' | 'delete' | 'schedule' | 'integrate' | 'settings';
+  id: 'interpret' | 'name' | 'delete' | 'schedule' | 'integrate' | 'settings' | 'options';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -71,6 +71,11 @@ const columns: readonly Column[] = [
   {
     id: 'delete',
     label: 'Delete',
+    minWidth: 80,
+  },
+  {
+    id: 'options',
+    label: 'Options',
     minWidth: 80,
   },
 ];
