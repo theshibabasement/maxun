@@ -3,7 +3,7 @@ import { GenericModal } from "../atoms/GenericModal";
 import { TextField, Typography, Box, Button } from "@mui/material";
 import { modalStyle } from "./AddWhereCondModal";
 import { useGlobalInfoStore } from '../../context/globalInfo';
-import { getStoredRecording } from '../../api/storage';
+import { getStoredRecording, updateRecording } from '../../api/storage';
 import { WhereWhatPair } from 'maxun-core';
 import { getUserById } from "../../api/auth";
 
@@ -18,6 +18,11 @@ interface RobotMeta {
 
 interface RobotWorkflow {
     workflow: WhereWhatPair[];
+}
+
+interface RobotEditOptions {
+  name: string;
+  limit?: number;
 }
 
 interface ScheduleConfig {
@@ -55,8 +60,16 @@ interface RobotSettingsProps {
 
 export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettings }: RobotSettingsProps) => {
     const [robot, setRobot] = useState<RobotSettings | null>(null);
-    const [userEmail, setUserEmail] = useState<string | null>(null);
+    // const [settings, setSettings] = useState<RobotEditOptions>({
+    //     name: '',
+    //   });
+
+    // const [userEmail, setUserEmail] = useState<string | null>(null);
     const { recordingId, notify } = useGlobalInfoStore();
+
+    // const handleChange = (field: keyof RobotEditOptions, value: string | number | boolean) => {
+    //     setSettings(prev => ({ ...prev, [field]: value }));
+    // };
 
     useEffect(() => {
         if (isOpen) {
@@ -73,22 +86,74 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
         }
     }
 
-    const lastPair = robot?.recording.workflow[robot?.recording.workflow.length - 1];
+    const handleRobotNameChange = (newName: string) => {
+        setRobot((prev) =>
+            prev ? { ...prev, recording_meta: { ...prev.recording_meta, name: newName } } : prev
+        );
+    };
+
+    const handleLimitChange = (newLimit: number) => {
+        setRobot((prev) => {
+            if (!prev) return prev;
+    
+            const updatedWorkflow = [...prev.recording.workflow];
+    
+            if (
+                updatedWorkflow.length > 0 &&
+                updatedWorkflow[0]?.what &&
+                updatedWorkflow[0].what.length > 0 &&
+                updatedWorkflow[0].what[0].args &&
+                updatedWorkflow[0].what[0].args.length > 0 &&
+                updatedWorkflow[0].what[0].args[0]
+            ) {
+                updatedWorkflow[0].what[0].args[0].limit = newLimit;
+            }
+    
+            return { ...prev, recording: { ...prev.recording, workflow: updatedWorkflow } };
+        });
+    };
+    const handleSave = async () => {
+        if (!robot) return;
+      
+        try {
+          const payload = {
+            name: robot.recording_meta.name,
+            limit: robot.recording.workflow[0]?.what[0]?.args?.[0]?.limit,
+          };
+                
+          const success = await updateRecording(robot.recording_meta.id, payload);
+      
+          if (success) {
+            notify('success', 'Robot updated successfully.');
+            handleStart(robot); // Inform parent about the updated robot
+            handleClose(); // Close the modal
+
+            window.location.reload();
+          } else {
+            notify('error', 'Failed to update the robot. Please try again.');
+          }
+        } catch (error) {
+          notify('error', 'An error occurred while updating the robot.');
+          console.error('Error updating robot:', error);
+        }
+    };
+
+    // const lastPair = robot?.recording.workflow[robot?.recording.workflow.length - 1];
 
     // Find the `goto` action in `what` and retrieve its arguments
-    const targetUrl = lastPair?.what.find(action => action.action === "goto")?.args?.[0];
+    // const targetUrl = lastPair?.what.find(action => action.action === "goto")?.args?.[0];
 
-    useEffect(() => {
-        const fetchUserEmail = async () => {
-            if (robot && robot.userId) {
-                const userData = await getUserById(robot.userId.toString());
-                if (userData && userData.user) {
-                    setUserEmail(userData.user.email);
-                }
-            }
-        };
-        fetchUserEmail();
-    }, [robot?.userId]);
+    // useEffect(() => {
+    //     const fetchUserEmail = async () => {
+    //         if (robot && robot.userId) {
+    //             const userData = await getUserById(robot.userId.toString());
+    //             if (userData && userData.user) {
+    //                 setUserEmail(userData.user.email);
+    //             }
+    //         }
+    //     };
+    //     fetchUserEmail();
+    // }, [robot?.userId]);
 
     return (
         <GenericModal
@@ -105,19 +170,24 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
                                 <TextField
                                     label="Change Robot Name"
                                     key="Change Robot Name"
+                                    type='text'
                                     value={robot.recording_meta.name}
+                                    onChange={(e) => handleRobotNameChange(e.target.value)}
                                     style={{ marginBottom: '20px' }}
                                 />
-                                {robot.recording.workflow?.[0]?.what?.[0]?.args?.[0]?.limit && (
+                                {robot.recording.workflow?.[0]?.what?.[0]?.args?.[0]?.limit !== undefined && (
                                     <TextField
-                                    label="Change Robot Limit"
-                                    key="Change Robot Limit"
-                                    value={robot.recording.workflow[0].what[0].args[0].limit || ''}
-                                    style={{ marginBottom: '20px' }}
+                                        label="Robot Limit"
+                                        type="number"
+                                        value={robot.recording.workflow[0].what[0].args[0].limit || ''}
+                                        onChange={(e) =>
+                                            handleLimitChange(parseInt(e.target.value, 10) || 0)
+                                        }
+                                        style={{ marginBottom: '20px' }}
                                     />
                                 )}
                                     
-                                <Box mt={2} display="flex" justifyContent="flex-end">
+                                <Box mt={2} display="flex" justifyContent="flex-end" onClick={handleSave}>
                                     <Button variant="contained" color="primary">
                                         Save Changes
                                     </Button>
