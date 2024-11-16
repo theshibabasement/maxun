@@ -90,9 +90,10 @@ interface RecordingsTableProps {
   handleScheduleRecording: (id: string, fileName: string, params: string[]) => void;
   handleIntegrateRecording: (id: string, fileName: string, params: string[]) => void;
   handleSettingsRecording: (id: string, fileName: string, params: string[]) => void;
+  handleEditRobot: (id: string, name: string, params: string[]) => void;
 }
 
-export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handleScheduleRecording, handleIntegrateRecording, handleSettingsRecording }: RecordingsTableProps) => {
+export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handleScheduleRecording, handleIntegrateRecording, handleSettingsRecording, handleEditRobot }: RecordingsTableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState<Data[]>([]);
@@ -252,7 +253,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                               return (
                                 <TableCell key={column.id} align={column.align}>
                                   <OptionsButton
-                                    handleEdit={() => handleEditRecording(row.id, row.name)}
+                                    handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
                                     handleDelete={() => {
                                       deleteRecordingFromStorage(row.id).then((result: boolean) => {
                                         if (result) {
