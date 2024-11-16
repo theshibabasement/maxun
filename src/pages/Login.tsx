@@ -58,7 +58,11 @@ const Login = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                mt: 5,
+                justifyContent: 'center',
+              
+             
+                height: "calc(100vh - 64px)",
+
             }}
         >
             <Typography variant="h4" gutterBottom>
@@ -112,6 +116,7 @@ const Login = () => {
                     </Link>
                 </Typography>
             </Box>
+            
         </Box>
     );
 };
