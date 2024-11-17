@@ -91,9 +91,10 @@ interface RecordingsTableProps {
   handleIntegrateRecording: (id: string, fileName: string, params: string[]) => void;
   handleSettingsRecording: (id: string, fileName: string, params: string[]) => void;
   handleEditRobot: (id: string, name: string, params: string[]) => void;
+  handleDuplicateRobot: (id: string, name: string, params: string[]) => void;
 }
 
-export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handleScheduleRecording, handleIntegrateRecording, handleSettingsRecording, handleEditRobot }: RecordingsTableProps) => {
+export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handleScheduleRecording, handleIntegrateRecording, handleSettingsRecording, handleEditRobot, handleDuplicateRobot }: RecordingsTableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState<Data[]>([]);
@@ -264,8 +265,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                       })
                                     }}
                                     handleDuplicate={() => {
-                                      notify('info', 'Duplicating recording...');
-                                      // Implement duplication logic here
+                                      handleDuplicateRobot(row.id, row.name, row.params || []);
                                     }}
                                   />
                                 </TableCell>
