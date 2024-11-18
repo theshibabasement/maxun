@@ -59,16 +59,7 @@ interface RobotSettingsProps {
 
 export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettings }: RobotSettingsProps) => {
     const [robot, setRobot] = useState<RobotSettings | null>(null);
-    // const [settings, setSettings] = useState<RobotEditOptions>({
-    //     name: '',
-    //   });
-
-    // const [userEmail, setUserEmail] = useState<string | null>(null);
     const { recordingId, notify } = useGlobalInfoStore();
-
-    // const handleChange = (field: keyof RobotEditOptions, value: string | number | boolean) => {
-    //     setSettings(prev => ({ ...prev, [field]: value }));
-    // };
 
     useEffect(() => {
         if (isOpen) {
@@ -136,23 +127,6 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
           console.error('Error updating robot:', error);
         }
     };
-
-    // const lastPair = robot?.recording.workflow[robot?.recording.workflow.length - 1];
-
-    // Find the `goto` action in `what` and retrieve its arguments
-    // const targetUrl = lastPair?.what.find(action => action.action === "goto")?.args?.[0];
-
-    // useEffect(() => {
-    //     const fetchUserEmail = async () => {
-    //         if (robot && robot.userId) {
-    //             const userData = await getUserById(robot.userId.toString());
-    //             if (userData && userData.user) {
-    //                 setUserEmail(userData.user.email);
-    //             }
-    //         }
-    //     };
-    //     fetchUserEmail();
-    // }, [robot?.userId]);
 
     return (
         <GenericModal
