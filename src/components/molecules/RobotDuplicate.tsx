@@ -132,8 +132,8 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
                                 <span>When to duplicate robots?</span>
                                 <br />
                                 <span>
-                                    Example: If you've created a robot for <b>producthunt.com/topics/api</b>, you can duplicate it to scrape similar pages 
-                                    like <b>producthunt.com/topics/database</b> without training a robot from scratch.
+                                    Example: If you've created a robot for <code>producthunt.com/topics/api</code>, you can duplicate it to scrape similar pages 
+                                    like <code>producthunt.com/topics/database</code> without training a robot from scratch.
                                     </span>
                                     <br />
                                 <span>
