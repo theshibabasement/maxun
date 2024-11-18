@@ -55,10 +55,11 @@ interface RobotSettingsProps {
     handleStart: (settings: RobotSettings) => void;
     handleClose: () => void;
     initialSettings?: RobotSettings | null;
-
+    
 }
 
 export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettings }: RobotSettingsProps) => {
+    console.log("robot edit");
     const [robot, setRobot] = useState<RobotSettings | null>(null);
     // const [settings, setSettings] = useState<RobotEditOptions>({
     //     name: '',
