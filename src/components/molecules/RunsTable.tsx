@@ -63,8 +63,6 @@ export const RunsTable = (
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState<Data[]>([]);
 
-  console.log(`rows runs: ${JSON.stringify(rows)}`);
-
   const { notify, rerenderRuns, setRerenderRuns } = useGlobalInfoStore();
 
   const handleChangePage = (event: unknown, newPage: number) => {
