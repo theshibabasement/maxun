@@ -129,7 +129,7 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
                     {
                         robot && (
                             <>
-                                <span>When to duplicate robots?</span>
+                                <span>Robot duplication is useful to extract data from pages with the same structure.</span>
                                 <br />
                                 <span>
                                     Example: If you've created a robot for <code>producthunt.com/topics/api</code>, you can duplicate it to scrape similar pages 
