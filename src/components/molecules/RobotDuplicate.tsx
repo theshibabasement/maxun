@@ -138,7 +138,7 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
                                     </span>
                                 
                                 <span>
-                                    ⚠️ Ensure the new page has a similar structure to the original for seamless functionality.
+                                <b>⚠️ Ensure the new page has the same structure as the original page.</b>
                                 </span>
                                 <TextField
                                     label="Robot Target URL"
