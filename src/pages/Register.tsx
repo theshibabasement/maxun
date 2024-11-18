@@ -89,20 +89,6 @@ const Register = () => {
           margin="normal"
           variant="outlined"
           required
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              backgroundColor: email ? "#ffe6f9" : "#ffffff",
-              "& fieldset": { borderColor: "#ff33cc" },
-              "&:hover fieldset": { borderColor: "#ff33cc" },
-              "&.Mui-focused fieldset": { borderColor: "#ff33cc" },
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: "0 0 0 1000px #ffe6f9 inset",
-              WebkitTextFillColor: "#000",
-            },
-            "& .MuiInputLabel-root": { color: email ? "#ff33cc" : "#000000" },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#ff33cc" },
-          }}
         />
         <TextField
           fullWidth
@@ -114,20 +100,6 @@ const Register = () => {
           margin="normal"
           variant="outlined"
           required
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              backgroundColor: password ? "#ffe6f9" : "#ffffff",
-              "& fieldset": { borderColor: "#ff33cc" },
-              "&:hover fieldset": { borderColor: "#ff33cc" },
-              "&.Mui-focused fieldset": { borderColor: "#ff33cc" },
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: "0 0 0 1000px #ffe6f9 inset",
-              WebkitTextFillColor: "#000",
-            },
-            "& .MuiInputLabel-root": { color: password ? "#ff33cc" : "#000000" },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#ff33cc" },
-          }}
         />
         <Button
           type="submit"
