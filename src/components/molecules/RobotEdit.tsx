@@ -5,7 +5,6 @@ import { modalStyle } from "./AddWhereCondModal";
 import { useGlobalInfoStore } from '../../context/globalInfo';
 import { getStoredRecording, updateRecording } from '../../api/storage';
 import { WhereWhatPair } from 'maxun-core';
-import { getUserById } from "../../api/auth";
 
 interface RobotMeta {
     name: string;
