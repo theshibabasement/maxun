@@ -124,7 +124,7 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             modalStyle={modalStyle}
         >
             <>
-                <Typography variant="h5" style={{ marginBottom: '20px' }}>Robot Settings <Chip label="beta" color="primary" variant="outlined" /></Typography>
+                <Typography variant="h5" style={{ marginBottom: '20px' }}>Duplicate Robot<Chip label="beta" color="primary" variant="outlined" /></Typography>
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                     {
                         robot && (
