@@ -45,6 +45,8 @@ export interface Data {
   // task: string;
   log: string;
   runId: string;
+  robotId: string;
+  robotMetaId: string;
   interpreterSettings: RunSettings;
   serializableOutput: any;
   binaryOutput: any;
