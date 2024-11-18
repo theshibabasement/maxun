@@ -130,17 +130,15 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
                         robot && (
                             <>
                                 <span>
-                                    Easily duplicate your robots to handle pages with a similar structure. For instance:
-
-                                    If you've created a robot for producthunt.com/topics/api, you can duplicate it to scrape similar pages like producthunt.com/topics/database without starting from scratch.
-                                    How it works:
-
-                                    Select a robot you want to duplicate.
-                                    Use the duplication feature to create a copy of the robot.
-                                    Customize the robot if needed, ensuring it fits the new page structure.
+                                    Easily duplicate your robots to handle pages with a similar structure. 
+                                    <br />
+                                    For instance:
+                                    If you've created a robot for <b>producthunt.com/topics/api</b>, you can duplicate it to scrape similar pages 
+                                    like <b>producthunt.com/topics/database</b> without starting from scratch.
+                                    </span>
+                                
+                                <span>
                                     ⚠️ Ensure the new page has a similar structure to the original for seamless functionality.
-
-                                    This feature saves you time and effort while keeping your workflow streamlined for similar pages.
                                 </span>
                                 <TextField
                                     label="Robot Target URL"
