@@ -105,12 +105,12 @@ export const RunsTable = (
     fetchRuns();
   };
 
-  // Group runs by recording name
+  // Group runs by robot meta id
   const groupedRows = rows.reduce((acc, row) => {
-    if (!acc[row.name]) {
-      acc[row.name] = [];
+    if (!acc[row.robotMetaId]) {
+      acc[row.robotMetaId] = [];
     }
-    acc[row.name].push(row);
+    acc[row.robotMetaId].push(row);
     return acc;
   }, {} as Record<string, Data[]>);
 
