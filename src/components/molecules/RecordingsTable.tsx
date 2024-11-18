@@ -22,7 +22,6 @@ import axios from 'axios';
 import { apiUrl } from '../../apiConfig';
 import { Menu as MenuIcon } from '@mui/icons-material';
 
-
 /** TODO:
  *  1. allow editing existing robot after persisting browser steps
  *  2. show robot settings: id, url, etc. 
@@ -261,11 +260,13 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                   <OptionsButton
                                     handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
                                     handleDelete={() => {
+
                                       checkRunsForRecording(row.id).then((result: boolean) => {
                                         if (result) {
                                           notify('warning', 'Cannot delete recording as it has active runs');
                                         }
                                       })
+
                                       deleteRecordingFromStorage(row.id).then((result: boolean) => {
                                         if (result) {
                                           setRows([]);

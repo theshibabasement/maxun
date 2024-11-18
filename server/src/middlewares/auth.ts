@@ -16,12 +16,12 @@ export const requireSignIn = (req: UserRequest, res: Response, next: any) => {
     }
 
     verify(token, secret, (err: any, user: any) => {
-        console.log(err)
-
-        if (err) return res.sendStatus(403)
-
-        req.user = user;
-
-        next()
-    })
+        if (err) {
+            console.log('JWT verification error:', err);
+            return res.sendStatus(403);
+        }
+        req.user = { ...user, id: user.userId }; // Normalize to include `id`
+        next();
+    });
+    
 };

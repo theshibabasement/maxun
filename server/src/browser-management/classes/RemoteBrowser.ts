@@ -307,6 +307,7 @@ export class RemoteBrowser {
             const workflow = this.generator.AddGeneratedFlags(this.generator.getWorkflowFile());
             await this.initializeNewPage();
             if (this.currentPage) {
+                this.currentPage.setViewportSize({ height: 400, width: 900 });
                 const params = this.generator.getParams();
                 if (params) {
                     this.interpreterSettings.params = params.reduce((acc, param) => {
