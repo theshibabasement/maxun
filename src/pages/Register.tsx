@@ -64,17 +64,17 @@ const Register = () => {
         component="form"
         onSubmit={submitForm}
         sx={{
-          textAlign: "center",
-          maxWidth: 400,
-          width: "100%",
-          backgroundColor: "#ffffff",
-          padding: 4,
-          borderRadius: 4,
-          boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+            textAlign: "center",
+            backgroundColor: "#ffffff",
+            padding: 6,
+            borderRadius: 5,
+            boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.2), 0px -5px 10px rgba(0, 0, 0, 0.15)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            maxWidth: 400,
+            width: "100%",
+          }}
       >
         <img src="../src/assets/maxunlogo.png" alt="logo" height={55} width={60} style={{ marginBottom: 20, borderRadius: "20%", alignItems: "center" }} />
         <Typography variant="h4" gutterBottom>
