@@ -96,17 +96,17 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             notify('error', 'Target URL is required.');
             return;
         }
-    
+
         console.log("handle save");
 
         try {
             const success = await duplicateRecording(robot.recording_meta.id, targetUrl);
-    
+
             if (success) {
                 notify('success', 'Target URL updated successfully.');
                 handleStart(robot); // Inform parent about the updated robot
                 handleClose(); // Close the modal
-    
+
                 window.location.reload();
             } else {
                 notify('error', 'Failed to update the Target URL. Please try again.');
@@ -116,7 +116,7 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             console.error('Error updating Target URL:', error);
         }
     };
-    
+
     return (
         <GenericModal
             isOpen={isOpen}
@@ -124,11 +124,24 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             modalStyle={modalStyle}
         >
             <>
-                <Typography variant="h5" style={{ marginBottom: '20px' }}>Duplicate Robot<Chip label="beta" color="primary" variant="outlined" /></Typography>
+                <Typography variant="h5" style={{ marginBottom: '20px' }}>Duplicate Robot <Chip label="beta" color="primary" variant="outlined" /></Typography>
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                     {
                         robot && (
                             <>
+                                <span>
+                                    Easily duplicate your robots to handle pages with a similar structure. For instance:
+
+                                    If you've created a robot for producthunt.com/topics/api, you can duplicate it to scrape similar pages like producthunt.com/topics/database without starting from scratch.
+                                    How it works:
+
+                                    Select a robot you want to duplicate.
+                                    Use the duplication feature to create a copy of the robot.
+                                    Customize the robot if needed, ensuring it fits the new page structure.
+                                    ⚠️ Ensure the new page has a similar structure to the original for seamless functionality.
+
+                                    This feature saves you time and effort while keeping your workflow streamlined for similar pages.
+                                </span>
                                 <TextField
                                     label="Robot Target URL"
                                     key="Robot Target URL"
