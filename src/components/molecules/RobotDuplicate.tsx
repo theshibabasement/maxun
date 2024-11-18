@@ -129,14 +129,13 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
                     {
                         robot && (
                             <>
+                                <span>When to duplicate robots?</span>
+                                <br />
                                 <span>
-                                    Easily duplicate your robots to handle pages with a similar structure. 
-                                    <br />
-                                    For instance:
-                                    If you've created a robot for <b>producthunt.com/topics/api</b>, you can duplicate it to scrape similar pages 
-                                    like <b>producthunt.com/topics/database</b> without starting from scratch.
+                                    Example: If you've created a robot for <b>producthunt.com/topics/api</b>, you can duplicate it to scrape similar pages 
+                                    like <b>producthunt.com/topics/database</b> without training a robot from scratch.
                                     </span>
-                                
+                                    <br />
                                 <span>
                                 <b>⚠️ Ensure the new page has the same structure as the original page.</b>
                                 </span>
@@ -145,7 +144,7 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
                                     key="Robot Target URL"
                                     value={targetUrl}
                                     onChange={handleTargetUrlChange}
-                                    style={{ marginBottom: '20px' }}
+                                    style={{ marginBottom: '20px', marginTop: '30px' }}
                                 />
                                 <Box mt={2} display="flex" justifyContent="flex-end" onClick={handleSave}>
                                     <Button variant="contained" color="primary">
