@@ -13,11 +13,13 @@ import { IconButton, Button, Box, Typography, TextField, MenuItem, Menu, ListIte
 import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power, ContentCopy, } from "@mui/icons-material";
 import LinkIcon from '@mui/icons-material/Link';
 import { useGlobalInfoStore } from "../../context/globalInfo";
-import { deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
+import { checkRunsForRecording, deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
 import { Add } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { stopRecording } from "../../api/recording";
 import { GenericModal } from '../atoms/GenericModal';
+import axios from 'axios';
+import { apiUrl } from '../../apiConfig';
 import { Menu as MenuIcon } from '@mui/icons-material';
 
 /** TODO:
@@ -161,6 +163,8 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
     }
   }, []);
 
+   
+
   return (
     <React.Fragment>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -256,6 +260,13 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                   <OptionsButton
                                     handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
                                     handleDelete={() => {
+
+                                      checkRunsForRecording(row.id).then((result: boolean) => {
+                                        if (result) {
+                                          notify('warning', 'Cannot delete recording as it has active runs');
+                                        }
+                                      })
+
                                       deleteRecordingFromStorage(row.id).then((result: boolean) => {
                                         if (result) {
                                           setRows([]);
