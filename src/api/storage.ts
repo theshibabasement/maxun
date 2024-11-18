@@ -35,7 +35,6 @@ export const updateRecording = async (id: string, data: { name?: string; limit?:
 
 export const duplicateRecording = async (id: string, targetUrl: string): Promise<any> => {
   try {
-    console.log("duplicating");
     const response = await axios.post(`${apiUrl}/storage/recordings/${id}/duplicate`, {
       targetUrl,
     });
