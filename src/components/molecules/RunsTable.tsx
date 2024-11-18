@@ -120,10 +120,10 @@ export const RunsTable = (
         All Runs
       </Typography>
       <TableContainer component={Paper} sx={{ width: '100%', overflow: 'hidden' }}>
-        {Object.entries(groupedRows).map(([name, group]) => (
-          <Accordion key={name}>
+        {Object.entries(groupedRows).map(([id, data]) => (
+          <Accordion key={id}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6">{name}</Typography>
+              <Typography variant="h6">{data[0].name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Table stickyHeader aria-label="sticky table">
@@ -142,17 +142,19 @@ export const RunsTable = (
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {group.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <CollapsibleRow
-                      row={row}
-                      handleDelete={handleDelete}
-                      key={`row-${row.id}`}
-                      isOpen={runId === row.runId && runningRecordingName === row.name}
-                      currentLog={currentInterpretationLog}
-                      abortRunHandler={abortRunHandler}
-                      runningRecordingName={runningRecordingName}
-                    />
-                  ))}
+                  {data
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => (
+                      <CollapsibleRow
+                        row={row}
+                        handleDelete={handleDelete}
+                        key={`row-${row.id}`}
+                        isOpen={runId === row.runId && runningRecordingName === row.name}
+                        currentLog={currentInterpretationLog}
+                        abortRunHandler={abortRunHandler}
+                        runningRecordingName={runningRecordingName}
+                      />
+                    ))}
                 </TableBody>
               </Table>
             </AccordionDetails>
