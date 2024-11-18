@@ -9,8 +9,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useEffect } from "react";
 import { WorkflowFile } from "maxun-core";
-import { IconButton, Button, Box, Typography, TextField } from "@mui/material";
-import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power } from "@mui/icons-material";
+import { IconButton, Button, Box, Typography, TextField, MenuItem, Menu, ListItemIcon, ListItemText } from "@mui/material";
+import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power, ContentCopy, } from "@mui/icons-material";
 import LinkIcon from '@mui/icons-material/Link';
 import { useGlobalInfoStore } from "../../context/globalInfo";
 import { checkRunsForRecording, deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
@@ -20,6 +20,7 @@ import { stopRecording } from "../../api/recording";
 import { GenericModal } from '../atoms/GenericModal';
 import axios from 'axios';
 import { apiUrl } from '../../apiConfig';
+import { Menu as MenuIcon } from '@mui/icons-material';
 
 
 /** TODO:
@@ -28,7 +29,7 @@ import { apiUrl } from '../../apiConfig';
 */
 
 interface Column {
-  id: 'interpret' | 'name' | 'delete' | 'schedule' | 'integrate' | 'settings';
+  id: 'interpret' | 'name' | 'options' | 'schedule' | 'integrate' | 'settings';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -71,8 +72,8 @@ const columns: readonly Column[] = [
     minWidth: 80,
   },
   {
-    id: 'delete',
-    label: 'Delete',
+    id: 'options',
+    label: 'Options',
     minWidth: 80,
   },
 ];
@@ -92,9 +93,11 @@ interface RecordingsTableProps {
   handleScheduleRecording: (id: string, fileName: string, params: string[]) => void;
   handleIntegrateRecording: (id: string, fileName: string, params: string[]) => void;
   handleSettingsRecording: (id: string, fileName: string, params: string[]) => void;
+  handleEditRobot: (id: string, name: string, params: string[]) => void;
+  handleDuplicateRobot: (id: string, name: string, params: string[]) => void;
 }
 
-export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handleScheduleRecording, handleIntegrateRecording, handleSettingsRecording }: RecordingsTableProps) => {
+export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handleScheduleRecording, handleIntegrateRecording, handleSettingsRecording, handleEditRobot, handleDuplicateRobot }: RecordingsTableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState<Data[]>([]);
@@ -252,39 +255,31 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                 <IntegrateButton handleIntegrate={() => handleIntegrateRecording(row.id, row.name, row.params || [])} />
                               </TableCell>
                             );
-                          case 'delete':
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                <IconButton aria-label="add" size="small" onClick={async () => {
-
-                                  checkRunsForRecording(row.id).then((result: boolean) => {
-                                    if (result) {
-                                      notify('warning', 'Cannot delete recording as it has active runs');
-                                    }
-                                  })
-                                  
-                                  
-                                    deleteRecordingFromStorage(row.id).then((result: boolean) => {
-                                      if (result) {
-                                        setRows([]);
-                                        notify('success', 'Recording deleted successfully');
-                                        fetchRecordings();
-                                      }
-                                    })
-                                  
-
-                                  
-
-                                 
-                                    
-                                  
-
-                                  
-                                }}>
-                                  <DeleteForever />
-                                </IconButton>
-                              </TableCell>
-                            );
+                            case 'options':
+                              return (
+                                <TableCell key={column.id} align={column.align}>
+                                  <OptionsButton
+                                    handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
+                                    handleDelete={() => {
+                                      checkRunsForRecording(row.id).then((result: boolean) => {
+                                        if (result) {
+                                          notify('warning', 'Cannot delete recording as it has active runs');
+                                        }
+                                      })
+                                      deleteRecordingFromStorage(row.id).then((result: boolean) => {
+                                        if (result) {
+                                          setRows([]);
+                                          notify('success', 'Recording deleted successfully');
+                                          fetchRecordings();
+                                        }
+                                      })
+                                    }}
+                                    handleDuplicate={() => {
+                                      handleDuplicateRobot(row.id, row.name, row.params || []);
+                                    }}
+                                  />
+                                </TableCell>
+                              );
                           case 'settings':
                             return (
                               <TableCell key={column.id} align={column.align}>
@@ -397,6 +392,60 @@ const SettingsButton = ({ handleSettings }: SettingsButtonProps) => {
     </IconButton>
   )
 }
+
+interface OptionsButtonProps {
+  handleEdit: () => void;
+  handleDelete: () => void;
+  handleDuplicate: () => void;
+}
+
+const OptionsButton = ({ handleEdit, handleDelete, handleDuplicate }: OptionsButtonProps) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <IconButton
+        aria-label="options"
+        size="small"
+        onClick={handleClick}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => { handleEdit(); handleClose(); }}>
+          <ListItemIcon>
+            <Edit fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Edit</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
+          <ListItemIcon>
+            <DeleteForever fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Delete</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => { handleDuplicate(); handleClose(); }}>
+          <ListItemIcon>
+            <ContentCopy fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Duplicate</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};
 
 const modalStyle = {
   top: '50%',
