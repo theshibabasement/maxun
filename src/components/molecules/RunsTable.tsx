@@ -123,7 +123,7 @@ export const RunsTable = (
         {Object.entries(groupedRows).map(([id, data]) => (
           <Accordion key={id}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6">{data[0].name}</Typography>
+                <Typography variant="h6">{data[data.length - 1].name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Table stickyHeader aria-label="sticky table">
