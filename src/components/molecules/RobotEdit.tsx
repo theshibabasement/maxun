@@ -20,8 +20,8 @@ interface RobotWorkflow {
 }
 
 interface RobotEditOptions {
-  name: string;
-  limit?: number;
+    name: string;
+    limit?: number;
 }
 
 interface ScheduleConfig {
@@ -85,9 +85,9 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
     const handleLimitChange = (newLimit: number) => {
         setRobot((prev) => {
             if (!prev) return prev;
-    
+
             const updatedWorkflow = [...prev.recording.workflow];
-    
+
             if (
                 updatedWorkflow.length > 0 &&
                 updatedWorkflow[0]?.what &&
@@ -98,33 +98,33 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
             ) {
                 updatedWorkflow[0].what[0].args[0].limit = newLimit;
             }
-    
+
             return { ...prev, recording: { ...prev.recording, workflow: updatedWorkflow } };
         });
     };
     const handleSave = async () => {
         if (!robot) return;
-      
-        try {
-          const payload = {
-            name: robot.recording_meta.name,
-            limit: robot.recording.workflow[0]?.what[0]?.args?.[0]?.limit,
-          };
-                
-          const success = await updateRecording(robot.recording_meta.id, payload);
-      
-          if (success) {
-            notify('success', 'Robot updated successfully.');
-            handleStart(robot); // Inform parent about the updated robot
-            handleClose(); // Close the modal
 
-            window.location.reload();
-          } else {
-            notify('error', 'Failed to update the robot. Please try again.');
-          }
+        try {
+            const payload = {
+                name: robot.recording_meta.name,
+                limit: robot.recording.workflow[0]?.what[0]?.args?.[0]?.limit,
+            };
+
+            const success = await updateRecording(robot.recording_meta.id, payload);
+
+            if (success) {
+                notify('success', 'Robot updated successfully.');
+                handleStart(robot); // Inform parent about the updated robot
+                handleClose(); // Close the modal
+
+                window.location.reload();
+            } else {
+                notify('error', 'Failed to update the robot. Please try again.');
+            }
         } catch (error) {
-          notify('error', 'An error occurred while updating the robot.');
-          console.error('Error updating robot:', error);
+            notify('error', 'An error occurred while updating the robot.');
+            console.error('Error updating robot:', error);
         }
     };
 
@@ -159,7 +159,7 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
                                         style={{ marginBottom: '20px' }}
                                     />
                                 )}
-                                    
+
                                 <Box mt={2} display="flex" justifyContent="flex-end" onClick={handleSave}>
                                     <Button variant="contained" color="primary">
                                         Save Changes
