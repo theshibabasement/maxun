@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { GenericModal } from "../atoms/GenericModal";
-import { TextField, Typography, Box, Button } from "@mui/material";
+import { TextField, Typography, Box, Button, Chip } from "@mui/material";
 import { modalStyle } from "./AddWhereCondModal";
 import { useGlobalInfoStore } from '../../context/globalInfo';
-import { getStoredRecording, updateRecording } from '../../api/storage';
+import { duplicateRecording, getStoredRecording } from '../../api/storage';
 import { WhereWhatPair } from 'maxun-core';
+import { getUserById } from "../../api/auth";
 
 interface RobotMeta {
     name: string;
@@ -17,11 +18,6 @@ interface RobotMeta {
 
 interface RobotWorkflow {
     workflow: WhereWhatPair[];
-}
-
-interface RobotEditOptions {
-    name: string;
-    limit?: number;
 }
 
 interface ScheduleConfig {
@@ -54,12 +50,12 @@ interface RobotSettingsProps {
     handleStart: (settings: RobotSettings) => void;
     handleClose: () => void;
     initialSettings?: RobotSettings | null;
-    
+
 }
 
-export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettings }: RobotSettingsProps) => {
-    console.log("robot edit");
+export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initialSettings }: RobotSettingsProps) => {
     const [robot, setRobot] = useState<RobotSettings | null>(null);
+    const [targetUrl, setTargetUrl] = useState<string | undefined>('');
     const { recordingId, notify } = useGlobalInfoStore();
 
     useEffect(() => {
@@ -67,6 +63,15 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
             getRobot();
         }
     }, [isOpen]);
+
+    useEffect(() => {
+        // Update the targetUrl when the robot data is loaded
+        if (robot) {
+            const lastPair = robot?.recording.workflow[robot?.recording.workflow.length - 1];
+            const url = lastPair?.what.find(action => action.action === "goto")?.args?.[0];
+            setTargetUrl(url);
+        }
+    }, [robot]);
 
     const getRobot = async () => {
         if (recordingId) {
@@ -77,55 +82,38 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
         }
     }
 
-    const handleRobotNameChange = (newName: string) => {
-        setRobot((prev) =>
-            prev ? { ...prev, recording_meta: { ...prev.recording_meta, name: newName } } : prev
-        );
+    // const lastPair = robot?.recording.workflow[robot?.recording.workflow.length - 1];
+
+    // // Find the `goto` action in `what` and retrieve its arguments
+    // const targetUrl = lastPair?.what.find(action => action.action === "goto")?.args?.[0];
+
+    const handleTargetUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTargetUrl(e.target.value);
     };
 
-    const handleLimitChange = (newLimit: number) => {
-        setRobot((prev) => {
-            if (!prev) return prev;
-
-            const updatedWorkflow = [...prev.recording.workflow];
-
-            if (
-                updatedWorkflow.length > 0 &&
-                updatedWorkflow[0]?.what &&
-                updatedWorkflow[0].what.length > 0 &&
-                updatedWorkflow[0].what[0].args &&
-                updatedWorkflow[0].what[0].args.length > 0 &&
-                updatedWorkflow[0].what[0].args[0]
-            ) {
-                updatedWorkflow[0].what[0].args[0].limit = newLimit;
-            }
-
-            return { ...prev, recording: { ...prev.recording, workflow: updatedWorkflow } };
-        });
-    };
     const handleSave = async () => {
-        if (!robot) return;
+        if (!robot || !targetUrl) {
+            notify('error', 'Target URL is required.');
+            return;
+        }
+
+        console.log("handle save");
 
         try {
-            const payload = {
-                name: robot.recording_meta.name,
-                limit: robot.recording.workflow[0]?.what[0]?.args?.[0]?.limit,
-            };
-
-            const success = await updateRecording(robot.recording_meta.id, payload);
+            const success = await duplicateRecording(robot.recording_meta.id, targetUrl);
 
             if (success) {
-                notify('success', 'Robot updated successfully.');
+                notify('success', 'Target URL updated successfully.');
                 handleStart(robot); // Inform parent about the updated robot
                 handleClose(); // Close the modal
 
                 window.location.reload();
             } else {
-                notify('error', 'Failed to update the robot. Please try again.');
+                notify('error', 'Failed to update the Target URL. Please try again.');
             }
         } catch (error) {
-            notify('error', 'An error occurred while updating the robot.');
-            console.error('Error updating robot:', error);
+            notify('error', 'An error occurred while updating the Target URL.');
+            console.error('Error updating Target URL:', error);
         }
     };
 
@@ -136,34 +124,31 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
             modalStyle={modalStyle}
         >
             <>
-                <Typography variant="h5" style={{ marginBottom: '20px' }}>Edit Robot</Typography>
+                <Typography variant="h5" style={{ marginBottom: '20px' }}>Duplicate Robot</Typography>
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                     {
                         robot && (
                             <>
+                                <span>Robot duplication is useful to extract data from pages with the same structure.</span>
+                                <br />
+                                <span>
+                                    Example: If you've created a robot for <code>producthunt.com/topics/api</code>, you can duplicate it to scrape similar pages 
+                                    like <code>producthunt.com/topics/database</code> without training a robot from scratch.
+                                    </span>
+                                    <br />
+                                <span>
+                                <b>⚠️ Ensure the new page has the same structure as the original page.</b>
+                                </span>
                                 <TextField
-                                    label="Change Robot Name"
-                                    key="Change Robot Name"
-                                    type='text'
-                                    value={robot.recording_meta.name}
-                                    onChange={(e) => handleRobotNameChange(e.target.value)}
-                                    style={{ marginBottom: '20px' }}
+                                    label="Robot Target URL"
+                                    key="Robot Target URL"
+                                    value={targetUrl}
+                                    onChange={handleTargetUrlChange}
+                                    style={{ marginBottom: '20px', marginTop: '30px' }}
                                 />
-                                {robot.recording.workflow?.[0]?.what?.[0]?.args?.[0]?.limit !== undefined && (
-                                    <TextField
-                                        label="Robot Limit"
-                                        type="number"
-                                        value={robot.recording.workflow[0].what[0].args[0].limit || ''}
-                                        onChange={(e) =>
-                                            handleLimitChange(parseInt(e.target.value, 10) || 0)
-                                        }
-                                        style={{ marginBottom: '20px' }}
-                                    />
-                                )}
-
                                 <Box mt={2} display="flex" justifyContent="flex-end" onClick={handleSave}>
                                     <Button variant="contained" color="primary">
-                                        Save Changes
+                                        Duplicate Robot
                                     </Button>
                                     <Button onClick={handleClose} color="primary" variant="outlined" style={{ marginLeft: '10px' }}>
                                         Cancel
