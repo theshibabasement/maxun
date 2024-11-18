@@ -97,6 +97,8 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             return;
         }
     
+        console.log("handle save");
+
         try {
             const success = await duplicateRecording(robot.recording_meta.id, targetUrl);
     
