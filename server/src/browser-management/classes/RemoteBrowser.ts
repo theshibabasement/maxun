@@ -163,7 +163,6 @@ export class RemoteBrowser {
 
         contextOptions.userAgent = browserUserAgent;
         this.context = await this.browser.newContext(contextOptions);
-        console.log(`Context from initialize: ${JSON.stringify(this.context)}`)
         this.currentPage = await this.context.newPage();
         console.log(`CPage from initialize: ${JSON.stringify(this.currentPage)}`)
         // await this.currentPage.setExtraHTTPHeaders({
