@@ -58,7 +58,6 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
     return [header, ...rows].join('\n');
   };
 
-  // Function to download CSV file when called
   const downloadCSV = () => {
     const csvContent = convertToCSV(tableData, columns);
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
