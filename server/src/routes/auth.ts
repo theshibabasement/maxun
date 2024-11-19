@@ -366,7 +366,7 @@ router.get(
 
       // Generate JWT token for session
       const jwtToken = jwt.sign(
-        { userId: user.id },
+        { id: user.id },
         process.env.JWT_SECRET as string
       );
       res.cookie("token", jwtToken, { httpOnly: true });
