@@ -495,7 +495,7 @@ async function createWorkflowAndStoreMetadata(id: string, userId: string) {
     } catch (e) {
         const { message } = e as Error;
         logger.log('info', `Error while scheduling a run with id: ${id}`);
-        console.log(message);
+        console.log(`Error scheduling run:`, message);
         return {
             success: false,
             error: message,
