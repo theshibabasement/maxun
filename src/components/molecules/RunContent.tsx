@@ -140,7 +140,9 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
                       {tableData.map((row, index) => (
                         <TableRow key={index}>
                           {columns.map((column) => (
-                            <TableCell key={column}>{row[column]}</TableCell>
+                            <TableCell key={column}>
+                              {row[column] === undefined || row[column] === "" ? "-" : row[column]}
+                            </TableCell>
                           ))}
                         </TableRow>
                       ))}
