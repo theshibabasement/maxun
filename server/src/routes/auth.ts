@@ -14,8 +14,6 @@ interface AuthenticatedRequest extends Request {
 }
 
 router.post("/register", async (req, res) => {
-  console.log("Received request at /auth/register");
-
   try {
     const { email, password } = req.body;
 
