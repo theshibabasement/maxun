@@ -767,7 +767,6 @@ router.post("/robots/:id/runs", requireAPIKey, async (req: AuthenticatedRequest,
             return res.status(401).json({ ok: false, error: 'Unauthorized' });
         }
         const runId = await handleRunRecording(req.params.id, req.user.dataValues.id);
-        console.log(`Result`, runId);
 
         if (!runId) {
             throw new Error('Run ID is undefined');
