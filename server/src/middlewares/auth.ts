@@ -25,9 +25,7 @@ export const requireSignIn = (req: UserRequest, res: Response, next: any) => {
             user.id = user.userId;
             delete user.userId; // temporary: del the old key for clarity
         }
-
         req.user = user;
         next();
     });
-
 };
