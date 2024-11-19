@@ -21,9 +21,15 @@ export const requireSignIn = (req: UserRequest, res: Response, next: any) => {
             console.log('JWT verification error:', err);
             return res.sendStatus(403);
         }
+        // Normalize payload key
+        if (user.userId && !user.id) {
+            user.id = user.userId;
+            delete user.userId; // temporary: del the old key for clarity
+        }
+
         req.user = user;
         console.log(`After: ${JSON.stringify(user)} and ${JSON.stringify(req.user)}`)
         next();
     });
-    
+
 };
