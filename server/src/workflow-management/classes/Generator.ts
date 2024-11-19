@@ -128,7 +128,6 @@ export class WorkflowGenerator {
    */
   private registerEventHandlers = (socket: Socket) => {
     socket.on('save', (data) => {
-      console.log('Received data:', data);
       const { fileName, userId } = data;
       logger.log('debug', `Saving workflow ${fileName} for user ID ${userId}`);
       this.saveNewWorkflow(fileName, userId);
