@@ -791,92 +791,73 @@ export const getNonUniqueSelectors = async (page: Page, coordinates: Coordinates
 };
 
 
-export const getChildSelectors = async (page: Page, outerHTML: string): Promise<string[]> => {
+export const getChildSelectors = async (page: Page, parentSelector: string): Promise<string[]> => {
   try {
-    const childSelectors = await page.evaluate((outerHTML: string) => {
+    const childSelectors = await page.evaluate((parentSelector: string) => {
+      // Function to get a non-unique selector based on tag and class (if present)
       function getNonUniqueSelector(element: HTMLElement): string {
-        // Start with tag name
         let selector = element.tagName.toLowerCase();
 
-        // Add meaningful attributes
-        const attributesToConsider = [
-          'class',
-          'data-testid',
-          'data-cy',
-          'data-test',
-          'aria-label',
-          'title',
-          'id'
-        ];
-
-        // Collect additional attributes
-        const additionalAttrs: string[] = [];
-
-        attributesToConsider.forEach(attrName => {
-          if (attrName === 'class') {
-            // Handle classes
-            const className = typeof element.className === 'string' ? element.className : '';
-            if (className) {
-              const classes = className.split(/\s+/)
-                .filter((cls: string) => Boolean(cls))
-                .filter(cls => !cls.startsWith('!') && !cls.includes(':'));
-              
-              if (classes.length > 0) {
-                additionalAttrs.push(
-                  classes.map(cls => `.${CSS.escape(cls)}`).join('')
-                );
-              }
-            }
-          } else {
-            // Handle other attributes
-            const attrValue = element.getAttribute(attrName);
-            if (attrValue) {
-              additionalAttrs.push(`[${attrName}="${CSS.escape(attrValue)}"]`);
+        const className = typeof element.className === 'string' ? element.className : '';
+        if (className) {
+          const classes = className.split(/\s+/).filter((cls: string) => Boolean(cls));
+          if (classes.length > 0) {
+            const validClasses = classes.filter((cls: string) => !cls.startsWith('!') && !cls.includes(':'));
+            if (validClasses.length > 0) {
+              selector += '.' + validClasses.map(cls => CSS.escape(cls)).join('.');
             }
           }
-        });
+        }
 
-        // Combine selector with attributes
-        return selector + additionalAttrs.join('');
+        return selector;
       }
 
-      function getSelectorPath(element: HTMLElement | null, root: HTMLElement): string {
-        if (!element || element === root) return '';
-        
-        const parentSelector = getSelectorPath(element.parentElement, root);
+      // Function to generate selector path from an element to its parent
+      function getSelectorPath(element: HTMLElement | null): string {
+        if (!element || !element.parentElement) return '';
+
+        const parentSelector = getNonUniqueSelector(element.parentElement);
         const elementSelector = getNonUniqueSelector(element);
 
-        return parentSelector ? `${parentSelector} ${elementSelector}` : elementSelector;
+        return `${parentSelector} > ${elementSelector}`;
       }
 
-      function parseOuterHTML(outerHTML: string): HTMLElement {
-        const tempContainer = document.createElement('div');
-        tempContainer.innerHTML = outerHTML.trim();
-        return tempContainer.firstElementChild as HTMLElement;
+      // Function to recursively get all descendant selectors
+      function getAllDescendantSelectors(element: HTMLElement): string[] {
+        let selectors: string[] = [];
+        const children = Array.from(element.children) as HTMLElement[];
+
+        for (const child of children) {
+          const childPath = getSelectorPath(child);
+          if (childPath) {
+            selectors.push(childPath);  // Add direct child path
+            selectors = selectors.concat(getAllDescendantSelectors(child));  // Recursively process descendants
+          }
+        }
+
+        return selectors;
       }
 
-      function getAllDescendantSelectors(root: HTMLElement): string[] {
-        const descendants = root.querySelectorAll('*');
-        const selectors = Array.from(descendants).map(element =>
-          getSelectorPath(element as HTMLElement, root)
-        );
-        
-        // Include the root element itself
-        const rootSelector = getNonUniqueSelector(root);
-        return [rootSelector, ...selectors];
-      }
+      // Find all occurrences of the parent selector in the DOM
+      const parentElements = Array.from(document.querySelectorAll(parentSelector)) as HTMLElement[];
+      const allChildSelectors = new Set<string>();  // Use a set to ensure uniqueness
 
-      const rootElement = parseOuterHTML(outerHTML);
-      if (!rootElement) return [];
-      return getAllDescendantSelectors(rootElement);
-    }, outerHTML);
+      // Process each parent element and its descendants
+      parentElements.forEach((parentElement) => {
+        const descendantSelectors = getAllDescendantSelectors(parentElement);
+        descendantSelectors.forEach((selector) => allChildSelectors.add(selector));  // Add selectors to the set
+      });
+
+      return Array.from(allChildSelectors);  // Convert the set back to an array
+    }, parentSelector);
 
     return childSelectors || [];
   } catch (error) {
-    console.error('Error in getChildSelectorsFromOuterHTML:', error);
+    console.error('Error in getChildSelectors:', error);
     return [];
   }
 };
+
 
 /**
  * Returns the first pair from the given workflow that contains the given selector
