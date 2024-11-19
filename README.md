@@ -52,6 +52,16 @@ npm install
 cd maxun-core 
 npm install
 
+# get back to the root directory
+cd ..
+
+# make sure playwright is properly initialized
+npx playwright install
+npx playwright install-deps
+
+# get back to the root directory
+cd ..
+
 # start frontend and backend together
 npm run start
 ```
