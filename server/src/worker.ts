@@ -63,7 +63,6 @@ console.log('Worker is running...');
 
 async function jobCounts() {
     const jobCounts = await workflowQueue.getJobCounts();
-    console.log('Jobs:', jobCounts);
 }
 
 jobCounts();
