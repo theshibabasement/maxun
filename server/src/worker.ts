@@ -73,7 +73,3 @@ process.on('SIGINT', () => {
 });
 
 export { workflowQueue, worker };
-
-export const temp = () => {
-    console.log('temp');
-}
