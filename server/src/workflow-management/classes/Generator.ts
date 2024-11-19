@@ -543,22 +543,6 @@ export class WorkflowGenerator {
     return bestSelector;
   }
 
-  public getOuterHTML = async (page: Page, parentSelector: string): Promise<string> => {
-    try {
-      const outerHTML = await page.evaluate((parentSelector: string) => {
-        const parentElement = document.querySelector(parentSelector);
-        return parentElement ? parentElement.outerHTML : '';
-      }, parentSelector);
-  
-      console.log(`Outer html: ${outerHTML}`)
-      return outerHTML;
-    } catch (error) {
-      console.error('Error in getOuterHTML:', error);
-      return '';
-    }
-  };
-  
-
   /**
    * Generates data for highlighting the element on client side and emits the
    * highlighter event to the client.
@@ -573,7 +557,7 @@ export class WorkflowGenerator {
     if (rect) {
       if (this.getList === true) {
         if (this.listSelector !== '') {
-          const childSelectors = await getChildSelectors(page, await this.getOuterHTML(page, this.listSelector));
+          const childSelectors = await getChildSelectors(page, this.listSelector || '');
           this.socket.emit('highlighter', { rect, selector: displaySelector, elementInfo, childSelectors })
           console.log(`Child Selectors: ${childSelectors}`)
           console.log(`Parent Selector: ${this.listSelector}`)
