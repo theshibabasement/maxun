@@ -31,22 +31,22 @@ export const RunContent = ({ row, currentLog, interpretationInProgress, logEndRe
     setTab(tab);
   }, [interpretationInProgress]);
 
-useEffect(() => {
-  if (row.serializableOutput && Object.keys(row.serializableOutput).length > 0) {
-    const firstKey = Object.keys(row.serializableOutput)[0];
-    const data = row.serializableOutput[firstKey];
-    if (Array.isArray(data)) {
-      // Filter out completely empty rows
-      const filteredData = data.filter(row =>
-        Object.values(row).some(value => value !== undefined && value !== "")
-      );
-      setTableData(filteredData);
-      if (filteredData.length > 0) {
-        setColumns(Object.keys(filteredData[0]));
+  useEffect(() => {
+    if (row.serializableOutput && Object.keys(row.serializableOutput).length > 0) {
+      const firstKey = Object.keys(row.serializableOutput)[0];
+      const data = row.serializableOutput[firstKey];
+      if (Array.isArray(data)) {
+        // Filter out completely empty rows
+        const filteredData = data.filter(row =>
+          Object.values(row).some(value => value !== undefined && value !== "")
+        );
+        setTableData(filteredData);
+        if (filteredData.length > 0) {
+          setColumns(Object.keys(filteredData[0]));
+        }
       }
     }
-  }
-}, [row.serializableOutput]);
+  }, [row.serializableOutput]);
 
 
   // Function to convert table data to CSV format
