@@ -74,8 +74,6 @@ router.get('/test', requireSignIn, async (req: AuthenticatedRequest, res: Respon
         const decryptedProxyUsername = user.proxy_username ? decrypt(user.proxy_username) : null;
         const decryptedProxyPassword = user.proxy_password ? decrypt(user.proxy_password) : null;
 
-        console.log(`Decrypted vals: ${decryptedProxyPassword}, ${decryptedProxyUrl}, ${decryptedProxyUsername}`);
-
         const proxyOptions: any = {
             server: decryptedProxyUrl,
             ...(decryptedProxyUsername && decryptedProxyPassword && {
@@ -169,8 +167,6 @@ export const getDecryptedProxyConfig = async (userId: string) => {
     const decryptedProxyUrl = user.proxy_url ? decrypt(user.proxy_url) : null;
     const decryptedProxyUsername = user.proxy_username ? decrypt(user.proxy_username) : null;
     const decryptedProxyPassword = user.proxy_password ? decrypt(user.proxy_password) : null;
-
-    console.log(`Decrypting ${decryptedProxyUrl}, ${decryptedProxyUsername}, ${decryptedProxyPassword}`);
 
     return {
         proxy_url: decryptedProxyUrl,

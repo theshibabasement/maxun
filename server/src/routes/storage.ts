@@ -180,9 +180,7 @@ router.put('/recordings/:id', requireSignIn, async (req: AuthenticatedRequest, r
     await robot.save();
 
     const updatedRobot = await Robot.findOne({ where: { 'recording_meta.id': id } });
-    console.log('After save:', updatedRobot);
 
-    // Log the update
     logger.log('info', `Robot with ID ${id} was updated successfully.`);
 
     return res.status(200).json({ message: 'Robot updated successfully', robot });

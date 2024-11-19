@@ -16,7 +16,6 @@ export const requireSignIn = (req: UserRequest, res: Response, next: any) => {
     }
 
     verify(token, secret, (err: any, user: any) => {
-        console.log(`Before: ${JSON.stringify(user)} and ${req.user}`)
         if (err) {
             console.log('JWT verification error:', err);
             return res.sendStatus(403);
@@ -26,10 +25,7 @@ export const requireSignIn = (req: UserRequest, res: Response, next: any) => {
             user.id = user.userId;
             delete user.userId; // temporary: del the old key for clarity
         }
-
         req.user = user;
-        console.log(`After: ${JSON.stringify(user)} and ${JSON.stringify(req.user)}`)
         next();
     });
-
 };
