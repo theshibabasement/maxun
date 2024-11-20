@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { WorkflowFile } from "maxun-core";
 import { IconButton, Button, Box, Typography, TextField } from "@mui/material";
 import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power } from "@mui/icons-material";
+import SearchIcon from '@mui/icons-material/Search';
 import LinkIcon from '@mui/icons-material/Link';
 import { useGlobalInfoStore } from "../../context/globalInfo";
 import { deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
@@ -18,7 +19,6 @@ import { Add } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { stopRecording } from "../../api/recording";
 import { GenericModal } from '../atoms/GenericModal';
-
 
 /** TODO:
  *  1. allow editing existing robot after persisting browser steps
@@ -36,17 +36,6 @@ interface Column {
 const columns: readonly Column[] = [
   { id: 'interpret', label: 'Run', minWidth: 80 },
   { id: 'name', label: 'Name', minWidth: 80 },
-  // {
-  //   id: 'createdAt',
-  //   label: 'Created at',
-  //   minWidth: 80,
-  //   //format: (value: string) => value.toLocaleString('en-US'),
-  // },
-  // {
-  //   id: 'edit',
-  //   label: 'Edit',
-  //   minWidth: 80,
-  // },
   {
     id: 'schedule',
     label: 'Schedule',
@@ -57,12 +46,6 @@ const columns: readonly Column[] = [
     label: 'Integrate',
     minWidth: 80,
   },
-  // {
-  //   id: 'updatedAt',
-  //   label: 'Updated at',
-  //   minWidth: 80,
-  //   //format: (value: string) => value.toLocaleString('en-US'),
-  // },
   {
     id: 'settings',
     label: 'Settings',
@@ -97,6 +80,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState<Data[]>([]);
   const [isModalOpen, setModalOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   console.log('rows', rows);
 
@@ -109,6 +93,11 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
     setPage(0);
   };
 
@@ -150,7 +139,6 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
   const startRecording = () => {
     setModalOpen(false);
     handleStartRecording();
-    // notify('info', 'New Recording started for ' + recordingUrl);
   };
 
   useEffect(() => {
@@ -159,34 +147,50 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
     }
   }, []);
 
+  // Filter rows based on search term
+  const filteredRows = rows.filter((row) =>
+    row.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <React.Fragment>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h6" gutterBottom>
           My Robots
         </Typography>
-        <IconButton
-          aria-label="new"
-          size={"small"}
-          onClick={handleNewRecording}
-          sx={{
-            width: '140px',
-            borderRadius: '5px',
-            padding: '8px',
-            background: '#ff00c3',
-            color: 'white',
-            marginRight: '10px',
-            fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
-            fontWeight: '500',
-            fontSize: '0.875rem',
-            lineHeight: '1.75',
-            letterSpacing: '0.02857em',
-            '&:hover': { color: 'white', backgroundColor: '#ff00c3' }
-          }
-          }
-        >
-          <Add sx={{ marginRight: '5px' }} /> Create Robot
-        </IconButton>
+        <Box display="flex" alignItems="center" gap={2}>
+          <TextField
+            size="small"
+            placeholder="Search robots..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: <SearchIcon sx={{ color: 'action.active', mr: 1 }} />
+            }}
+            sx={{ width: '250px' }}
+          />
+          <IconButton
+            aria-label="new"
+            size={"small"}
+            onClick={handleNewRecording}
+            sx={{
+              width: '140px',
+              borderRadius: '5px',
+              padding: '8px',
+              background: '#ff00c3',
+              color: 'white',
+              marginRight: '10px',
+              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+              fontWeight: '500',
+              fontSize: '0.875rem',
+              lineHeight: '1.75',
+              letterSpacing: '0.02857em',
+              '&:hover': { color: 'white', backgroundColor: '#ff00c3' }
+            }}
+          >
+            <Add sx={{ marginRight: '5px' }} /> Create Robot
+          </IconButton>
+        </Box>
       </Box>
       <TableContainer component={Paper} sx={{ width: '100%', overflow: 'hidden', marginTop: '15px' }}>
         <Table stickyHeader aria-label="sticky table">
@@ -204,7 +208,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.length !== 0 ? rows
+            {filteredRows.length !== 0 ? filteredRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -226,16 +230,6 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                 <InterpretButton handleInterpret={() => handleRunRecording(row.id, row.name, row.params || [])} />
                               </TableCell>
                             );
-                          // case 'edit':
-                          //   return (
-                          //     <TableCell key={column.id} align={column.align}>
-                          //       <IconButton aria-label="add" size="small" onClick={() => {
-                          //         handleEditRecording(row.id, row.name);
-                          //       }} sx={{ '&:hover': { color: '#1976d2', backgroundColor: 'transparent' } }}>
-                          //         <Edit />
-                          //       </IconButton>
-                          //     </TableCell>
-                          //   );
                           case 'schedule':
                             return (
                               <TableCell key={column.id} align={column.align}>
@@ -285,7 +279,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
       <TablePagination
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
-        count={rows ? rows.length : 0}
+        count={filteredRows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -330,7 +324,6 @@ const InterpretButton = ({ handleInterpret }: InterpretButtonProps) => {
     </IconButton>
   )
 }
-
 
 interface ScheduleButtonProps {
   handleSchedule: () => void;
