@@ -65,21 +65,21 @@ export const NavBar: React.FC<NavBarProps> = ({ recordingName, isRecording }) =>
             {!isRecording ? (
               <>
                 <IconButton
-                component="a"
-                href="https://discord.gg/NFhWDCdb"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  borderRadius: '5px',
-                  padding: '8px',
-                  marginRight: '10px',
-                }}
+                  component="a"
+                  href="https://discord.gg/5GbPjBUkws"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    borderRadius: '5px',
+                    padding: '8px',
+                    marginRight: '30px',
+                  }}
                 >
-                <DiscordIcon sx={{ marginRight: '5px' }} />
+                  <DiscordIcon sx={{ marginRight: '5px' }} />
                 </IconButton>
-              <iframe src="https://ghbtns.com/github-btn.html?user=getmaxun&repo=maxun&type=star&count=true&size=large" frameBorder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+                <iframe src="https://ghbtns.com/github-btn.html?user=getmaxun&repo=maxun&type=star&count=true&size=large" frameBorder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
                 <IconButton onClick={handleMenuOpen} sx={{
                   display: 'flex',
                   alignItems: 'center',

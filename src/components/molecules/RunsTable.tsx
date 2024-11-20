@@ -63,7 +63,9 @@ export const RunsTable = (
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState<Data[]>([]);
+
   const [searchTerm, setSearchTerm] = useState('');
+
 
   const { notify, rerenderRuns, setRerenderRuns } = useGlobalInfoStore();
 
@@ -110,6 +112,7 @@ export const RunsTable = (
     fetchRuns();
   };
 
+
   // Filter rows based on search term
   const filteredRows = rows.filter((row) =>
     row.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -117,6 +120,7 @@ export const RunsTable = (
 
   // Group filtered rows by robot meta id
   const groupedRows = filteredRows.reduce((acc, row) => {
+
     if (!acc[row.robotMetaId]) {
       acc[row.robotMetaId] = [];
     }
@@ -145,7 +149,9 @@ export const RunsTable = (
         {Object.entries(groupedRows).map(([id, data]) => (
           <Accordion key={id}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+
               <Typography variant="h6">{data[data.length - 1].name}</Typography>
+
             </AccordionSummary>
             <AccordionDetails>
               <Table stickyHeader aria-label="sticky table">
