@@ -44,6 +44,8 @@ export interface Data {
   runByAPI?: boolean;
   log: string;
   runId: string;
+  robotId: string;
+  robotMetaId: string;
   interpreterSettings: RunSettings;
   serializableOutput: any;
   binaryOutput: any;
@@ -62,8 +64,6 @@ export const RunsTable = (
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState<Data[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-
-  console.log(`rows runs: ${JSON.stringify(rows)}`);
 
   const { notify, rerenderRuns, setRerenderRuns } = useGlobalInfoStore();
 
@@ -115,12 +115,12 @@ export const RunsTable = (
     row.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Group filtered runs by recording name
+  // Group filtered rows by robot meta id
   const groupedRows = filteredRows.reduce((acc, row) => {
-    if (!acc[row.name]) {
-      acc[row.name] = [];
+    if (!acc[row.robotMetaId]) {
+      acc[row.robotMetaId] = [];
     }
-    acc[row.name].push(row);
+    acc[row.robotMetaId].push(row);
     return acc;
   }, {} as Record<string, Data[]>);
 
@@ -142,10 +142,10 @@ export const RunsTable = (
         />
       </Box>
       <TableContainer component={Paper} sx={{ width: '100%', overflow: 'hidden' }}>
-        {Object.entries(groupedRows).map(([name, group]) => (
-          <Accordion key={name}>
+        {Object.entries(groupedRows).map(([id, data]) => (
+          <Accordion key={id}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6">{name}</Typography>
+              <Typography variant="h6">{data[data.length - 1].name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Table stickyHeader aria-label="sticky table">
@@ -164,17 +164,19 @@ export const RunsTable = (
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {group.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <CollapsibleRow
-                      row={row}
-                      handleDelete={handleDelete}
-                      key={`row-${row.id}`}
-                      isOpen={runId === row.runId && runningRecordingName === row.name}
-                      currentLog={currentInterpretationLog}
-                      abortRunHandler={abortRunHandler}
-                      runningRecordingName={runningRecordingName}
-                    />
-                  ))}
+                  {data
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => (
+                      <CollapsibleRow
+                        row={row}
+                        handleDelete={handleDelete}
+                        key={`row-${row.id}`}
+                        isOpen={runId === row.runId && runningRecordingName === row.name}
+                        currentLog={currentInterpretationLog}
+                        abortRunHandler={abortRunHandler}
+                        runningRecordingName={runningRecordingName}
+                      />
+                    ))}
                 </TableBody>
               </Table>
             </AccordionDetails>
