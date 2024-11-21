@@ -559,6 +559,8 @@ export class WorkflowGenerator {
         if (this.listSelector !== '') {
           const childSelectors = await getChildSelectors(page, this.listSelector || '');
           this.socket.emit('highlighter', { rect, selector: displaySelector, elementInfo, childSelectors })
+          console.log(`Child Selectors: ${childSelectors}`)
+          console.log(`Parent Selector: ${this.listSelector}`)
         } else {
           this.socket.emit('highlighter', { rect, selector: displaySelector, elementInfo });
         }
