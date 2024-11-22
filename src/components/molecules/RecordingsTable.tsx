@@ -161,7 +161,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
     row.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-   
+
 
 
   return (
@@ -254,33 +254,33 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                 <IntegrateButton handleIntegrate={() => handleIntegrateRecording(row.id, row.name, row.params || [])} />
                               </TableCell>
                             );
-                            case 'options':
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  <OptionsButton
-                                    handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
-                                    handleDelete={() => {
+                          case 'options':
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                <OptionsButton
+                                  handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
+                                  handleDelete={() => {
 
-                                      checkRunsForRecording(row.id).then((result: boolean) => {
-                                        if (result) {
-                                          notify('warning', 'Cannot delete recording as it has active runs');
-                                        }
-                                      })
+                                    checkRunsForRecording(row.id).then((result: boolean) => {
+                                      if (result) {
+                                        notify('warning', 'Cannot delete recording as it has active runs');
+                                      }
+                                    })
 
-                                      deleteRecordingFromStorage(row.id).then((result: boolean) => {
-                                        if (result) {
-                                          setRows([]);
-                                          notify('success', 'Recording deleted successfully');
-                                          fetchRecordings();
-                                        }
-                                      })
-                                    }}
-                                    handleDuplicate={() => {
-                                      handleDuplicateRobot(row.id, row.name, row.params || []);
-                                    }}
-                                  />
-                                </TableCell>
-                              );
+                                    deleteRecordingFromStorage(row.id).then((result: boolean) => {
+                                      if (result) {
+                                        setRows([]);
+                                        notify('success', 'Recording deleted successfully');
+                                        fetchRecordings();
+                                      }
+                                    })
+                                  }}
+                                  handleDuplicate={() => {
+                                    handleDuplicateRobot(row.id, row.name, row.params || []);
+                                  }}
+                                />
+                              </TableCell>
+                            );
                           case 'settings':
                             return (
                               <TableCell key={column.id} align={column.align}>
