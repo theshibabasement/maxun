@@ -41,8 +41,9 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: server/Dockerfile
+      #context: .
+      #dockerfile: server/Dockerfile
+      image: getmaxun/maxun-backend:latest
     ports:
       - "8080:8080"
     env_file: .env
@@ -68,8 +69,9 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      #context: .
+      #dockerfile: Dockerfile
+      image: getmaxun/maxun-frontend:latest
     ports:
       - "5173:5173"
     env_file: .env
