@@ -243,7 +243,7 @@ const ProxyForm: React.FC = () => {
                     </Box>
                 )}
             </FormContainer>
-            <Alert severity="info" sx={{marginTop: '80px', marginLeft: '50px', height: '230px', width: '450px'}} variant='outlined'>
+            <Alert severity="info" sx={{ marginTop: '80px', marginLeft: '50px', height: '230px', width: '450px', border: '1px solid #ff00c3' }}>
             <AlertTitle>If your proxy requires a username and password, always provide them separately from the proxy URL. </AlertTitle>
                 <br />
                 <b>The right way</b>
