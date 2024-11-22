@@ -182,7 +182,7 @@ export const IntegrationSettingsModal = ({
 
         {recording && recording.google_sheet_id ? (
           <>
-            <Alert severity="info" sx={{ border: '1px solid #ff00c3' }}>
+            <Alert severity="info" sx={{ marginTop: '10px', border: '1px solid #ff00c3' }}>
               <AlertTitle>Google Sheet Integrated Successfully.</AlertTitle>
               Every time this robot creates a successful run, its captured data
               is appended to your {recording.google_sheet_name} Google Sheet.
