@@ -243,7 +243,7 @@ const ProxyForm: React.FC = () => {
                     </Box>
                 )}
             </FormContainer>
-            <Box sx={{ marginTop: '20px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', maxWidth: '600px' }}>
+            <Box sx={{ marginLeft: '20px', padding: '20px', border: '0.2px solid #ccc', borderRadius: '5px', maxWidth: '600px', height: '350px', color: 'rgba(0, 0, 0, 0.6)' }}>
                 <Typography variant="h6" gutterBottom>
                     Proxy Instructions
                 </Typography>
