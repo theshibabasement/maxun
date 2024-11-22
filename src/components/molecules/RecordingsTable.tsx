@@ -21,7 +21,6 @@ import { GenericModal } from '../atoms/GenericModal';
 
 /** TODO:
  *  1. allow editing existing robot after persisting browser steps
- *  2. show robot settings: id, url, etc. 
 */
 
 interface Column {
