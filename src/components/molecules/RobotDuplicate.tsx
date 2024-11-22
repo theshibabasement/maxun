@@ -103,11 +103,13 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             const success = await duplicateRecording(robot.recording_meta.id, targetUrl);
 
             if (success) {
-                notify('success', 'Target URL updated successfully.');
+                notify('success', 'Robot duplicated successfully.');
                 handleStart(robot); // Inform parent about the updated robot
-                handleClose(); // Close the modal
+                handleClose(); 
 
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else {
                 notify('error', 'Failed to update the Target URL. Please try again.');
             }
