@@ -105,7 +105,7 @@ export const RobotDuplicationModal = ({ isOpen, handleStart, handleClose, initia
             if (success) {
                 notify('success', 'Robot duplicated successfully.');
                 handleStart(robot); // Inform parent about the updated robot
-                handleClose(); // Close the modal
+                handleClose(); 
 
                 setTimeout(() => {
                     window.location.reload();
