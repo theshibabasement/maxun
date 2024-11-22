@@ -118,7 +118,9 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
                 handleStart(robot); // Inform parent about the updated robot
                 handleClose(); // Close the modal
 
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else {
                 notify('error', 'Failed to update the robot. Please try again.');
             }
