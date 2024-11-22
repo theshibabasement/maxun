@@ -145,22 +145,22 @@ const ProxyForm: React.FC = () => {
                 {tabIndex === 0 && (
                     isProxyConfigured ? (
                         <Box sx={{ maxWidth: 600, width: '100%', marginTop: '5px' }}>
-                                <TableContainer component={Paper} sx={{ marginBottom: '20px' }}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell><strong>Proxy URL</strong></TableCell>
-                                                <TableCell><strong>Requires Authentication</strong></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell>{proxy.proxy_url}</TableCell>
-                                                <TableCell>{proxy.auth ? 'Yes' : 'No'}</TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                            <TableContainer component={Paper} sx={{ marginBottom: '20px' }}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell><strong>Proxy URL</strong></TableCell>
+                                            <TableCell><strong>Requires Authentication</strong></TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell>{proxy.proxy_url}</TableCell>
+                                            <TableCell>{proxy.auth ? 'Yes' : 'No'}</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                             <Button variant="outlined" color="primary" onClick={testProxy}>
                                 Test Proxy
                             </Button>
@@ -237,32 +237,32 @@ const ProxyForm: React.FC = () => {
                                 Coming Soon - In Open Source (Basic Rotation) & Cloud (Advanced Rotation). If you don't want to manage the infrastructure, join our cloud waitlist to get early access.
                             </Typography>
                             <Button variant="contained" color="primary" sx={{ marginTop: '20px' }}>
-                                <a style={{color: 'white', textDecoration: 'none'}} href="https://forms.gle/hXjgqDvkEhPcaBW76">Join Maxun Cloud Waitlist</a>
+                                <a style={{ color: 'white', textDecoration: 'none' }} href="https://forms.gle/hXjgqDvkEhPcaBW76">Join Maxun Cloud Waitlist</a>
                             </Button>
                         </>
                     </Box>
                 )}
             </FormContainer>
             <Box sx={{ marginTop: '20px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', maxWidth: '600px' }}>
-    <Typography variant="h6" gutterBottom>
-        Proxy Instructions
-    </Typography>
-    <Typography variant="body1" gutterBottom>
-        1. Enter the Proxy Server URL in the format: http://myproxy.com:3128 or socks5://myproxy.com:3128.
-    </Typography>
-    <Typography variant="body1" gutterBottom>
-        2. If your proxy requires authentication, toggle the "Requires Authentication?" switch and provide the username and password.
-    </Typography>
-    <Typography variant="body1" gutterBottom>
-        3. Click "Add Proxy" to save the configuration.
-    </Typography>
-    <Typography variant="body1" gutterBottom>
-        4. Use the "Test Proxy" button to verify if the proxy configuration is working.
-    </Typography>
-    <Typography variant="body1" gutterBottom>
-        5. If needed, you can remove the proxy configuration using the "Remove Proxy" button.
-    </Typography>
-</Box>
+                <Typography variant="h6" gutterBottom>
+                    Proxy Instructions
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    1. Enter the Proxy Server URL in the format: http://myproxy.com:3128 or socks5://myproxy.com:3128.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    2. If your proxy requires authentication, toggle the "Requires Authentication?" switch and provide the username and password.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    3. Click "Add Proxy" to save the configuration.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    4. Use the "Test Proxy" button to verify if the proxy configuration is working.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    5. If needed, you can remove the proxy configuration using the "Remove Proxy" button.
+                </Typography>
+            </Box>
         </>
     );
 };
