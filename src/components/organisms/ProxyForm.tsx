@@ -231,7 +231,7 @@ const ProxyForm: React.FC = () => {
                         </Box>
                     ))}
                 {tabIndex === 1 && (
-                    <Box sx={{ maxWidth: 600, width: '100%', textAlign: 'center', marginTop: '20px' }}>
+                    <Box sx={{ maxWidth: 400, width: '100%', textAlign: 'center', marginTop: '20px' }}>
                         <>
                             <Typography variant="body1" gutterBottom component="div">
                                 Coming Soon - In Open Source (Basic Rotation) & Cloud (Advanced Rotation). If you don't want to manage the infrastructure, join our cloud waitlist to get early access.
@@ -243,7 +243,7 @@ const ProxyForm: React.FC = () => {
                     </Box>
                 )}
             </FormContainer>
-            <Box sx={{ marginLeft: '20px', padding: '20px', border: '0.2px solid #ccc', borderRadius: '5px', maxWidth: '600px', height: '350px', color: 'rgba(0, 0, 0, 0.6)' }}>
+            <Box sx={{ marginLeft: '50px', padding: '20px', border: '0.2px solid #ccc', borderRadius: '5px', maxWidth: '500px', height: '350px', color: 'rgba(0, 0, 0, 0.6)' }}>
                 <Typography variant="h6" gutterBottom>
                     Proxy Instructions
                 </Typography>
