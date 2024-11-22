@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/system';
-import { TextField, Button, Switch, FormControlLabel, Box, Typography, Tabs, Tab, Table, TableContainer, TableHead, TableRow, TableBody, TableCell, Paper } from '@mui/material';
+import { Alert, AlertTitle, TextField, Button, Switch, FormControlLabel, Box, Typography, Tabs, Tab, Table, TableContainer, TableHead, TableRow, TableBody, TableCell, Paper } from '@mui/material';
 import { sendProxyConfig, getProxyConfig, testProxyConfig, deleteProxyConfig } from '../../api/proxy';
 import { useGlobalInfoStore } from '../../context/globalInfo';
 
@@ -243,26 +243,22 @@ const ProxyForm: React.FC = () => {
                     </Box>
                 )}
             </FormContainer>
-            <Box sx={{ marginLeft: '50px', padding: '20px', border: '0.2px solid #ccc', borderRadius: '5px', maxWidth: '500px', height: '350px', color: 'rgba(0, 0, 0, 0.6)' }}>
-                <Typography variant="h6" gutterBottom>
-                    Proxy Instructions
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    1. Enter the Proxy Server URL in the format: http://myproxy.com:3128 or socks5://myproxy.com:3128.
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    2. If your proxy requires authentication, toggle the "Requires Authentication?" switch and provide the username and password.
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    3. Click "Add Proxy" to save the configuration.
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    4. Use the "Test Proxy" button to verify if the proxy configuration is working.
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    5. If needed, you can remove the proxy configuration using the "Remove Proxy" button.
-                </Typography>
-            </Box>
+            <Alert severity="info" sx={{marginTop: '80px', marginLeft: '50px', height: '230px', width: '450px'}} variant='outlined'>
+            <AlertTitle>If your proxy requires a username and password, always provide them separately from the proxy URL. </AlertTitle>
+                <br />
+                <b>The right way</b>
+                <br />
+                Proxy URL: http://proxy.com:1337
+                <br />
+                Username: myusername
+                <br />
+                Password: mypassword
+                <br />
+                <br />
+                <b>The wrong way</b>
+                <br />
+                Proxy URL: http://myusername:mypassword@proxy.com:1337
+            </Alert>
         </>
     );
 };
