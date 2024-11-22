@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from "styled-components";
 import { stopRecording } from "../../api/recording";
 import { useGlobalInfoStore } from "../../context/globalInfo";
-import { IconButton, Menu, MenuItem, Typography, Avatar } from "@mui/material";
+import { IconButton, Menu, MenuItem, Typography, Avatar, Chip, } from "@mui/material";
 import { AccountCircle, Logout, Clear } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
@@ -58,6 +58,7 @@ export const NavBar: React.FC<NavBarProps> = ({ recordingName, isRecording }) =>
       }}>
         <img src={MaxunLogo} width={45} height={40} style={{ borderRadius: '5px', margin: '5px 0px 5px 15px' }} />
         <div style={{ padding: '11px' }}><ProjectName>Maxun</ProjectName></div>
+        <Chip label="beta" color="primary" variant="outlined" sx={{ marginTop: '10px' }} />
       </div>
       {
         user ? (

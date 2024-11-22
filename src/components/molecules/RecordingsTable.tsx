@@ -9,13 +9,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useEffect } from "react";
 import { WorkflowFile } from "maxun-core";
-
-
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton, Button, Box, Typography, TextField, MenuItem, Menu, ListItemIcon, ListItemText } from "@mui/material";
-import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power, ContentCopy, } from "@mui/icons-material";
-
-import LinkIcon from '@mui/icons-material/Link';
+import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power, ContentCopy, MoreHoriz } from "@mui/icons-material";
 import { useGlobalInfoStore } from "../../context/globalInfo";
 import { checkRunsForRecording, deleteRecordingFromStorage, getStoredRecordings } from "../../api/storage";
 import { Add } from "@mui/icons-material";
@@ -23,14 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import { stopRecording } from "../../api/recording";
 import { GenericModal } from '../atoms/GenericModal';
 
-import axios from 'axios';
-import { apiUrl } from '../../apiConfig';
-import { Menu as MenuIcon } from '@mui/icons-material';
-
-
 /** TODO:
  *  1. allow editing existing robot after persisting browser steps
- *  2. show robot settings: id, url, etc. 
 */
 
 interface Column {
@@ -161,7 +151,7 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
     row.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-   
+
 
 
   return (
@@ -254,33 +244,33 @@ export const RecordingsTable = ({ handleEditRecording, handleRunRecording, handl
                                 <IntegrateButton handleIntegrate={() => handleIntegrateRecording(row.id, row.name, row.params || [])} />
                               </TableCell>
                             );
-                            case 'options':
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  <OptionsButton
-                                    handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
-                                    handleDelete={() => {
+                          case 'options':
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                <OptionsButton
+                                  handleEdit={() => handleEditRobot(row.id, row.name, row.params || [])}
+                                  handleDelete={() => {
 
-                                      checkRunsForRecording(row.id).then((result: boolean) => {
-                                        if (result) {
-                                          notify('warning', 'Cannot delete recording as it has active runs');
-                                        }
-                                      })
+                                    checkRunsForRecording(row.id).then((result: boolean) => {
+                                      if (result) {
+                                        notify('warning', 'Cannot delete recording as it has active runs');
+                                      }
+                                    })
 
-                                      deleteRecordingFromStorage(row.id).then((result: boolean) => {
-                                        if (result) {
-                                          setRows([]);
-                                          notify('success', 'Recording deleted successfully');
-                                          fetchRecordings();
-                                        }
-                                      })
-                                    }}
-                                    handleDuplicate={() => {
-                                      handleDuplicateRobot(row.id, row.name, row.params || []);
-                                    }}
-                                  />
-                                </TableCell>
-                              );
+                                    deleteRecordingFromStorage(row.id).then((result: boolean) => {
+                                      if (result) {
+                                        setRows([]);
+                                        notify('success', 'Recording deleted successfully');
+                                        fetchRecordings();
+                                      }
+                                    })
+                                  }}
+                                  handleDuplicate={() => {
+                                    handleDuplicateRobot(row.id, row.name, row.params || []);
+                                  }}
+                                />
+                              </TableCell>
+                            );
                           case 'settings':
                             return (
                               <TableCell key={column.id} align={column.align}>
@@ -417,7 +407,7 @@ const OptionsButton = ({ handleEdit, handleDelete, handleDuplicate }: OptionsBut
         size="small"
         onClick={handleClick}
       >
-        <MenuIcon />
+        <MoreHoriz />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
