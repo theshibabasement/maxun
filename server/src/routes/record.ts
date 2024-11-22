@@ -11,14 +11,14 @@ import {
     stopRunningInterpretation,
     getRemoteBrowserCurrentUrl, getRemoteBrowserCurrentTabs,
 } from '../browser-management/controller'
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-extra';
 import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 import logger from "../logger";
 import { getDecryptedProxyConfig } from './proxy';
 import { requireSignIn } from '../middlewares/auth';
 
 export const router = Router();
-// chromium.use(stealthPlugin());
+chromium.use(stealthPlugin());
 
 
 export interface AuthenticatedRequest extends Request {

@@ -1,6 +1,7 @@
 import { readFile, readFiles } from "../workflow-management/storage";
 import { Router, Request, Response } from 'express';
-import { chromium } from "playwright";
+import { chromium } from "playwright-extra";
+import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { requireAPIKey } from "../middlewares/api";
 import Robot from "../models/Robot";
 import Run from "../models/Run";
@@ -14,6 +15,7 @@ import { io, Socket } from "socket.io-client";
 import { BinaryOutputService } from "../storage/mino";
 import { AuthenticatedRequest } from "../routes/record"
 import {capture} from "../utils/analytics";
+chromium.use(stealthPlugin());
 
 const formatRecording = (recordingData: any) => {
     const recordingMeta = recordingData.recording_meta;
