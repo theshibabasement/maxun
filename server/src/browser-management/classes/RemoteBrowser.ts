@@ -3,9 +3,10 @@ import {
     Browser,
     CDPSession,
     BrowserContext,
-    chromium,
 } from 'playwright';
 import { Socket } from "socket.io";
+import { chromium } from 'playwright-extra';
+import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { PlaywrightBlocker } from '@cliqz/adblocker-playwright';
 import fetch from 'cross-fetch';
 
@@ -14,7 +15,7 @@ import { InterpreterSettings, RemoteBrowserOptions } from "../../types";
 import { WorkflowGenerator } from "../../workflow-management/classes/Generator";
 import { WorkflowInterpreter } from "../../workflow-management/classes/Interpreter";
 import { getDecryptedProxyConfig } from '../../routes/proxy';
-
+chromium.use(stealthPlugin());
 
 
 /**

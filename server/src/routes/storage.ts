@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import logger from "../logger";
 import { createRemoteBrowserForRun, destroyRemoteBrowser } from "../browser-management/controller";
-import { chromium } from "playwright";
+import { chromium } from 'playwright-extra';
+import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { browserPool } from "../server";
 import { uuid } from "uuidv4";
 import moment from 'moment-timezone';
@@ -17,6 +18,7 @@ import { AuthenticatedRequest } from './record';
 import { computeNextRun } from '../utils/schedule';
 import { capture } from "../utils/analytics";
 import { tryCatch } from 'bullmq';
+chromium.use(stealthPlugin());
 
 export const router = Router();
 

@@ -1,8 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { chromium } from "playwright";
+import { chromium } from 'playwright-extra';
+import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 import User from '../models/User';
 import { encrypt, decrypt } from '../utils/auth';
 import { requireSignIn } from '../middlewares/auth';
+chromium.use(stealthPlugin());
 
 export const router = Router();
 
