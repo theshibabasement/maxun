@@ -13,7 +13,7 @@ import { WorkflowFile } from "maxun-core";
 
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton, Button, Box, Typography, TextField, MenuItem, Menu, ListItemIcon, ListItemText } from "@mui/material";
-import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power, ContentCopy, } from "@mui/icons-material";
+import { Schedule, DeleteForever, Edit, PlayCircle, Settings, Power, ContentCopy, MoreHoriz } from "@mui/icons-material";
 
 import LinkIcon from '@mui/icons-material/Link';
 import { useGlobalInfoStore } from "../../context/globalInfo";
@@ -417,7 +417,7 @@ const OptionsButton = ({ handleEdit, handleDelete, handleDuplicate }: OptionsBut
         size="small"
         onClick={handleClick}
       >
-        <MenuIcon />
+        <MoreHoriz />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
