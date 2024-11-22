@@ -116,7 +116,7 @@ export const RobotEditModal = ({ isOpen, handleStart, handleClose, initialSettin
             if (success) {
                 notify('success', 'Robot updated successfully.');
                 handleStart(robot); // Inform parent about the updated robot
-                handleClose(); // Close the modal
+                handleClose(); 
 
                 setTimeout(() => {
                     window.location.reload();
