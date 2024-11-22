@@ -243,6 +243,26 @@ const ProxyForm: React.FC = () => {
                     </Box>
                 )}
             </FormContainer>
+            <Box sx={{ marginTop: '20px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', maxWidth: '600px' }}>
+    <Typography variant="h6" gutterBottom>
+        Proxy Instructions
+    </Typography>
+    <Typography variant="body1" gutterBottom>
+        1. Enter the Proxy Server URL in the format: http://myproxy.com:3128 or socks5://myproxy.com:3128.
+    </Typography>
+    <Typography variant="body1" gutterBottom>
+        2. If your proxy requires authentication, toggle the "Requires Authentication?" switch and provide the username and password.
+    </Typography>
+    <Typography variant="body1" gutterBottom>
+        3. Click "Add Proxy" to save the configuration.
+    </Typography>
+    <Typography variant="body1" gutterBottom>
+        4. Use the "Test Proxy" button to verify if the proxy configuration is working.
+    </Typography>
+    <Typography variant="body1" gutterBottom>
+        5. If needed, you can remove the proxy configuration using the "Remove Proxy" button.
+    </Typography>
+</Box>
         </>
     );
 };
