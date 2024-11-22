@@ -177,7 +177,7 @@ export const IntegrationSettingsModal = ({
       >
         <Typography variant="h6">
           Integrate with Google Sheet{" "}
-          <Chip label="beta" color="primary" variant="outlined" />
+          {/* <Chip label="beta" color="primary" variant="outlined" /> */}
         </Typography>
 
         {recording && recording.google_sheet_id ? (
