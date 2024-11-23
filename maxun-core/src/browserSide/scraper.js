@@ -235,7 +235,8 @@ function scrapableHeuristics(maxCountPerPage = 50, minArea = 20000, scrolls = 3,
 
         switch (attribute) {
           case 'href':
-            return elem.getAttribute('href');
+            const relativeHref = elem.getAttribute('href'); // Get the href attribute
+            return relativeHref ? new URL(relativeHref, window.location.origin).href : null; // Convert to full URL
           case 'src':
             return elem.getAttribute('src');
           case 'innerText':
