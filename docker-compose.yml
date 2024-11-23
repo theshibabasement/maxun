@@ -43,7 +43,7 @@ services:
     #build:
       #context: .
       #dockerfile: server/Dockerfile
-    image: getmaxun/maxun-backend:v0.0.1
+    image: getmaxun/maxun-backend:v0.0.2
     ports:
       - "8080:8080"
     env_file: .env
